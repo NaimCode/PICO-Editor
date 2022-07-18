@@ -4,7 +4,7 @@ import { listMenu, Menu } from "./menu";
 
 const SideBar: FunctionComponent = () => {
   return (
-    <div className="w-[80px] h-full bg-[#151617] px-2 py-4 space-y-3">
+    <div className="w-[80px] min-w-[80px] h-full bg-[#151617] px-2 py-4 space-y-3">
       {listMenu.map((menu, i) => <ItemMenu key={i} title={menu.title} icon={menu.icon} route={menu.route}/>)}
     </div>
   );

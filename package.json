@@ -17,6 +17,7 @@
     "react-icons": "^4.4.0",
     "react-konva": "^18.2.1",
     "react-router-dom": "^6.3.0",
+    "use-element-size": "^1.2.2",
     "use-image": "^1.0.12"
   },
   "devDependencies": {

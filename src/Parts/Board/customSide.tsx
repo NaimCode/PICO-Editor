@@ -2,7 +2,7 @@ import React from 'react'
 
 const CustomSide = () => {
   return (
-    <div className='h-[50px] w-full bg-white shadow-sm'></div>
+    <div className='h-[50px] min-h-[50px] w-full bg-white shadow-sm'></div>
   )
 }
 

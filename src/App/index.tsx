@@ -12,7 +12,7 @@ const App: FunctionComponent = () => {
         {/* NavBar */}
         <NavBar />
         {/* Content */}
-        <div className="flex-grow w-full flex flex-row">
+        <div className="flex-grow w-full flex flex-row overflow-hidden">
           <SideBar />
           <SideContent />
           <Board/>
