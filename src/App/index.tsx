@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import { BrowserRouter } from "react-router-dom";
+import Board from "../Parts/Board";
 import SideBar from "../Parts/SideBar";
 import SideContent from "../Parts/SideContent";
 import NavBar from "./navBar";
@@ -14,7 +15,9 @@ const App: FunctionComponent = () => {
         <div className="flex-grow w-full flex flex-row">
           <SideBar />
           <SideContent />
+          <Board/>
         </div>
+        
       </main>
     </BrowserRouter>
   );

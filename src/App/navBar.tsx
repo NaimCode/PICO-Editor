@@ -20,7 +20,7 @@ const NavBar: FunctionComponent = () => {
       <span className="text-white/90 text-sm">  100%</span>
         <IconButton icon={ <ZoomInIcon/>}/>
         <div className="w-[20px]"></div>
-        <button className="flex flex-row gap-2 items-center bg-[#e7e7e8]  f py-2 px-4 rounded-md ">
+        <button className="flex flex-row gap-2 items-center hover:bg-gray-300 bg-[#e7e7e8]  f py-2 px-4 rounded-md ">
             <ExportIcon className="text-xl text-black "/>
             <span className="text-black/80 text-[14px]">Export</span></button>
       </div>
