@@ -1,32 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { Layer, Rect, Shape, Stage } from "react-konva";
 import { useElementSize } from "use-element-size";
+import { useAppSelector } from "../../hooks";
+import { SelectBoardStage } from "../../state/slices/boardSlice";
 import CustomSide from "./customSide";
 import { useBoardSize } from "./hooks";
 
-const Board = () => {
-  const { ref: boardRef, isReadyStage, dimension } = useBoardSize({});
-
+type BoardProps = {
+  stageRef: RefObject<any>;
+};
+const Board = ({ stageRef }: BoardProps) => {
+  const stage =useAppSelector(SelectBoardStage)
   return (
     <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden">
       <CustomSide />
-      <div
-        ref={boardRef}
-        className="overflow-scroll  flex-grow flex flex-col items-center justify-center p-5"
-      >
-        {isReadyStage && (
-          <Stage
-        
-            className="bg-[white] transition-all drop-shadow-sm hover:border-2 border-[#00a1ff] rounded-md overflow-hidden"
-            onClick={(e) => console.log(e)}
-            width={430}
-            height={600}
-          >
-            <Layer>
-                
-            </Layer>
-          </Stage>
-        )}
+      <div className="overflow-scroll  flex-grow flex flex-col items-center justify-center p-5">
+        <Stage
+          ref={stageRef}
+          width={stage.dimension.width}
+          height={stage.dimension.height}
+        >
+          <Layer>
+            <Rect
+              cornerRadius={10}
+              fill={stage.fill}
+              width={stage.dimension.width}
+              height={stage.dimension.height}
+            />
+          </Layer>
+        </Stage>
       </div>
     </div>
   );

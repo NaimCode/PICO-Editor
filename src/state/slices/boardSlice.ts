@@ -1,24 +1,40 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { RefObject } from "react";
 import { RootState } from '../index';
 
+type TDimension={
+    width:number,height:number
+}
+
+type TStage={
+    dimension:TDimension,
+    fill:string
+}
 type TBoard={
-    ref?:HTMLDivElement
+   stage:TStage
 }
 const initialState:TBoard={
-    ref:undefined
+stage:{
+    dimension:{
+        width:420,
+        height:600
+    },
+    fill:"white"
+}
 }
 const boardSlice=createSlice({
     name:"board",
     initialState,
     reducers:{
-      updateRef:(state:any,action:PayloadAction<HTMLDivElement>)=>{
-         state.ref=action.payload
-      } 
+     updateStage:(state:TBoard,action:PayloadAction<{property:keyof TStage,value:any}>)=>{
+     const {property, value}=action.payload
+     state.stage[property]=value;
+     }
     }
 })
 
 
 export const BoardAction = boardSlice.actions
-export const SelectBoardRef =(state:RootState)=>state.board.ref
-
+export const SelectBoard =(state:RootState)=>state.board
+export const SelectBoardStage =(state:RootState)=>state.board.stage
 export default boardSlice.reducer
