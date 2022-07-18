@@ -16,11 +16,16 @@ const Board = () => {
       >
         {isReadyStage && (
           <Stage
-            className="bg-[white] transition-all hover:border-2 border-[#00a1ff] rounded-md overflow-hidden"
+        
+            className="bg-[white] transition-all drop-shadow-sm hover:border-2 border-[#00a1ff] rounded-md overflow-hidden"
             onClick={(e) => console.log(e)}
             width={430}
             height={600}
-          ></Stage>
+          >
+            <Layer>
+                
+            </Layer>
+          </Stage>
         )}
       </div>
     </div>
