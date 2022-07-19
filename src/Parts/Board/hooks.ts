@@ -22,6 +22,10 @@ const dispatch = useAppDispatch();
     dispatch(BoardAction.SelectNode(index));
   };
 
-  return {onMouseLeave,onClick,onMouseOver }
+  const onChange=(index:number,propsChanged:any)=>{
+    dispatch(BoardAction.updateNodeProps({index,value:propsChanged}))
+  }
+
+  return {onMouseLeave,onClick,onMouseOver,onChange }
 }
 

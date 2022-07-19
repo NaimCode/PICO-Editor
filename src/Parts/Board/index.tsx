@@ -36,7 +36,7 @@ const Board = ({ stageRef }: BoardProps) => {
   const nodes = useAppSelector(SelectBoardNodes);
   const actif = useAppSelector(SelectBoardActifNode);
 
-  const { onClick, onMouseOver, onMouseLeave } = useNodeEvent();
+  const { onClick, onMouseOver, onMouseLeave,onChange } = useNodeEvent();
 
   return (
     <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden">
@@ -62,9 +62,13 @@ const Board = ({ stageRef }: BoardProps) => {
                 onClick: (e: any) => onClick(i),
                 onMouseLeave: (e: any) => onMouseLeave(i),
                 onMouseOver: (e: any) => onMouseOver(i),
+                 onDragEnd:(e:any)=>onChange(i,{
+                  x: e.target.x(),
+                  y: e.target.y(),
+                 })
               };
               
-             return <ShapeItem key={i} props={props} isSelected={actif == i} node={node} index={i}/>
+             return <ShapeItem key={i} props={props} isSelected={actif == i} node={node} index={i} onChange={onChange}/>
             })}
           </Layer>
         </Stage>

@@ -17,7 +17,8 @@ type ShapeItemProps = {
   isSelected: boolean;
   props: any;
   node:TNode,
-  index:number
+  index:number,
+  onChange:Function
 };
 const ShapeItem = ({ props, isSelected,node, index}: ShapeItemProps) => {
   const [transforming, setTransforming] = useState(false);

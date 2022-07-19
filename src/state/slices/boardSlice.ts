@@ -47,6 +47,15 @@ const boardSlice = createSlice({
         state.nodeActif = action.payload;
      
       },
+      updateNodeProps: (
+        state: TBoard,
+        action: PayloadAction<{ index?: number; value: any, }>
+      ) => {
+        const { index, value } = action.payload;
+        if(index)
+        state.nodes[index].props={...state.nodes[index].props,...value};
+        else  state.nodes[state.nodeActif!].props = {... state.nodes[state.nodeActif!].props, ...value};
+      },
       
     updateNode: (
       state: TBoard,
