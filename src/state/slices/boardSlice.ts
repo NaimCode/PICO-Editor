@@ -4,13 +4,13 @@ import { RootState } from "../index";
 
 
 type TProperty= 'fill'| 'opacity'
-
+export type TNodeType= "image" | "rect" | "text" | "regularPolygon" |"star" |"ellipse" |"circle" |"arc"
 type TDimension = {
   width: number;
   height: number;
 };
 export type TNode = {
-  type: "image" | "rect" | "text";
+  type: TNodeType;
   props: any;
 };
 type TStage = {
@@ -33,6 +33,13 @@ const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
+    AddNode: (
+      state: TBoard,
+      action: PayloadAction<TNode>
+    ) => {
+      state.nodes.push(action.payload);
+   
+    },
     SelectNode: (
         state: TBoard,
         action: PayloadAction<number>

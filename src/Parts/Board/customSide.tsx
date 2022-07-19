@@ -28,16 +28,17 @@ export default CustomSide;
 
 const EditNode = ({ node }: { node: TNode }) => {
   switch (node.type) {
-    case "rect":
+    case "image":
+      return <div>empty</div>;
+    case "text":
+      return <div>empty</div>;
+    default:
       return (
         <>
           <FillButton node={node} />
           <OpacityButton node={node} />
         </>
       );
-
-    default:
-      return <div>rine</div>;
   }
 };
 

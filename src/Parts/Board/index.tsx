@@ -5,7 +5,19 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Layer, Rect, Shape, Stage } from "react-konva";
+import {
+  Arc,
+  Circle,
+  Ellipse,
+  Image,
+  Layer,
+  Rect,
+  RegularPolygon,
+  Shape,
+  Stage,
+  Star,
+  Text,
+} from "react-konva";
 import { useElementSize } from "use-element-size";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
@@ -35,23 +47,37 @@ const Board = ({ stageRef }: BoardProps) => {
         >
           <Layer>
             {nodes.map((node, i) => {
-              const { props } = node;
               const strokeEnabled =
-                actif == i ? true : props.strokeEnabled ? true : false;
+                actif == i ? true : node.props.strokeEnabled ? true : false;
+              const props = {
+                key: i,
+                ...node.props,
+                draggable:i!=0?true:false,
+                stroke: "#00a1ff",
+                strokeWidth: 4,
+                strokeEnabled: strokeEnabled,
+                onClick: (e: any) => onClick(i),
+                onMouseLeave: (e: any) => onMouseLeave(i),
+                onMouseOver: (e: any) => onMouseOver(i),
+              };
+
               switch (node.type) {
                 case "rect":
-                  return (
-                    <Rect
-                      key={i}
-                      {...props}
-                      stroke="#00a1ff"
-                      strokeWidth={4}
-                      strokeEnabled={strokeEnabled}
-                      onClick={(e) => onClick(i)}
-                      onMouseLeave={(e) => onMouseLeave(i)}
-                      onMouseOver={(e) => onMouseOver(i)}
-                    />
-                  );
+                  return <Rect {...props} />;
+                case "arc":
+                  return <Arc {...props} />;
+                case "star":
+                  return <Star {...props} />;
+                case "regularPolygon":
+                  return <RegularPolygon {...props} />;
+                case "circle":
+                  return <Circle {...props} />;
+                case "ellipse":
+                  return <Ellipse {...props} />;
+                case "text":
+                  return <Text {...props} />;
+                case "image":
+                  return <Image {...props} />;
 
                 default:
                   break;

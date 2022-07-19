@@ -29,7 +29,7 @@ const NavBar = ({stageRef}:NavBarProps) => {
   }
   };
   return (
-    <div className="h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
+    <div className="min-h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
       <div className="flex flex-row items-center">
         <Logo />
         <ProjectName />
