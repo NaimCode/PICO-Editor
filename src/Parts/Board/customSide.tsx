@@ -6,39 +6,82 @@ import {
   SelectBoardNodes,
   TNode,
 } from "../../state/slices/boardSlice";
-import { CgColorBucket as FillIcon } from 'react-icons/cg';
-import { Tooltip } from "@geist-ui/core";
+import {
+  CgColorBucket as FillIcon,
+  CgDropOpacity as OpacityIcon,
+} from "react-icons/cg";
+import { Popover, Slider, Spacer, Tooltip } from "@geist-ui/core";
+import { Link } from "react-router-dom";
 
 const CustomSide = () => {
-  const dispatch = useAppDispatch();
   const actif = useAppSelector(SelectBoardActifNode);
   const node = useAppSelector(SelectBoardNodes)[actif!];
-  
-console.log(actif);
 
   return (
-    <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center gap-1 px-3">
-      {node && <EditNode node={node}/>}
+    <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-3">
+      {node && <EditNode node={node} />}
     </div>
   );
 };
 
 export default CustomSide;
 
+const EditNode = ({ node }: { node: TNode }) => {
+  switch (node.type) {
+    case "rect":
+      return (
+        <>
+          <FillButton node={node} />
+          <OpacityButton node={node} />
+        </>
+      );
 
-const EditNode=({node}:{node:TNode})=>{
-switch (node.type) {
-  case "rect":
-    
-  return  (<><FillButton/> <input type={"color"}/></>)
+    default:
+      return <div>rine</div>;
+  }
+};
 
-  default:
-   return <div>rine</div>
-}
-}
+const FillButton = ({ node }: { node: TNode }) => {
+  const dispath = useAppDispatch();
 
-const FillButton=()=>{
+  return (
+    <div className="relative  flex flex-col items-center justify-center iconButton gap-1 rounded-sm text-lg">
+      <input
+        className="cursor-pointer rounded-md border-none bg-transparent opacity-0 w-[40px] h-[40px] absolute top-0 left-0"
+        type={"color"}
+        onChange={(e) =>
+          dispath(
+            BoardAction.updateNode({ property: "fill", value: e.target.value })
+          )
+        }
+      />
+      <FillIcon />
+      <div
+        style={{ backgroundColor: node.props.fill }}
+        className={"h-[8px] w-[20px] rounded-sm border-[1px]"}
+      ></div>
+    </div>
+  );
+};
 
-  return <button  className="flex flex-col items-center justify-center gap-1 hover:bg-gray-100/60 w-[40px] h-[40px] rounded-sm text-lg"><FillIcon/><div className="h-[6px] w-[20px] bg-blue-200"></div> </button>
- 
-}
+const OpacityButton = ({ node }: { node: TNode }) => {
+  const dispath = useAppDispatch();
+
+  const content = () => (
+    <div style={{ padding: "0 10px" }} className="w-[200px] px-5">
+      <Slider
+        initialValue={node.props.opacity ? node.props.opacity * 100 : 100}
+        onChange={(e) => {
+          dispath(
+            BoardAction.updateNode({ property: "opacity", value: e / 100 })
+          );
+        }}
+      />
+    </div>
+  );
+  return (
+    <Popover content={content} className="iconButton text-lg">
+      <OpacityIcon />
+    </Popover>
+  );
+};

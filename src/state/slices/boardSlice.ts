@@ -2,6 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RefObject } from "react";
 import { RootState } from "../index";
 
+
+type TProperty= 'fill'| 'opacity'
+
 type TDimension = {
   width: number;
   height: number;
@@ -40,10 +43,12 @@ const boardSlice = createSlice({
       
     updateNode: (
       state: TBoard,
-      action: PayloadAction<{ index: number; value: any,property:any }>
+      action: PayloadAction<{ index?: number; value: any,property:any | TProperty }>
     ) => {
       const { index, value,property } = action.payload;
+      if(index)
       state.nodes[index].props[property] = value;
+      else  state.nodes[state.nodeActif!].props[property] = value;
     },
     
   },

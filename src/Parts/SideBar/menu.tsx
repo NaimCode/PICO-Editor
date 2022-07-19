@@ -11,7 +11,7 @@ export interface Menu{
 export const listMenu:Array<Menu>=[
     {
         title:"Templates",
-        route:"",
+        route:"templates",
         icon:(style)=><TemplateIcon className={style}/>
     },
     {

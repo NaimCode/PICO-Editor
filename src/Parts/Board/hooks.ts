@@ -8,15 +8,15 @@ export const useNodeEvent=()=>{
 const dispatch = useAppDispatch();
   const onMouseOver = (index: number) => {
     document.body.style.cursor = "pointer";
-    dispatch(
-      BoardAction.updateNode({ index, property: "strokeEnabled", value: true })
-    );
+    // dispatch(
+    //   BoardAction.updateNode({ index, property: "strokeEnabled", value: true })
+    // );
   };
   const onMouseLeave = (index: number) => {
     document.body.style.cursor = "default";
-    dispatch(
-      BoardAction.updateNode({ index, property: "strokeEnabled", value: false })
-    );
+    // dispatch(
+    //   BoardAction.updateNode({ index, property: "strokeEnabled", value: false })
+    // );
   };
   const onClick = (index: number) => {
     dispatch(BoardAction.SelectNode(index));
