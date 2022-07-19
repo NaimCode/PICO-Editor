@@ -13,7 +13,6 @@ import {
   Layer,
   Rect,
   RegularPolygon,
-  Shape,
   Stage,
   Star,
   Text,
@@ -24,9 +23,11 @@ import {
   BoardAction,
   SelectBoardActifNode,
   SelectBoardNodes,
+  TNode,
 } from "../../state/slices/boardSlice";
 import CustomSide from "./customSide";
 import { useNodeEvent } from "./hooks";
+import ShapeItem from './shapeItem';
 
 type BoardProps = {
   stageRef: RefObject<any>;
@@ -34,6 +35,7 @@ type BoardProps = {
 const Board = ({ stageRef }: BoardProps) => {
   const nodes = useAppSelector(SelectBoardNodes);
   const actif = useAppSelector(SelectBoardActifNode);
+
   const { onClick, onMouseOver, onMouseLeave } = useNodeEvent();
 
   return (
@@ -46,42 +48,23 @@ const Board = ({ stageRef }: BoardProps) => {
           height={nodes[0].props.height}
         >
           <Layer>
-            {nodes.map((node, i) => {
-              const strokeEnabled =
+            {nodes.map((node, i) =>{
+             
+                const strokeEnabled =
                 actif == i ? true : node.props.strokeEnabled ? true : false;
               const props = {
                 key: i,
                 ...node.props,
                 draggable:i!=0?true:false,
-                stroke: "#00a1ff",
-                strokeWidth: 4,
-                strokeEnabled: strokeEnabled,
+                // stroke: "#00a1ff",
+                // strokeWidth: 2,
+                // strokeEnabled: strokeEnabled,
                 onClick: (e: any) => onClick(i),
                 onMouseLeave: (e: any) => onMouseLeave(i),
                 onMouseOver: (e: any) => onMouseOver(i),
               };
-
-              switch (node.type) {
-                case "rect":
-                  return <Rect {...props} />;
-                case "arc":
-                  return <Arc {...props} />;
-                case "star":
-                  return <Star {...props} />;
-                case "regularPolygon":
-                  return <RegularPolygon {...props} />;
-                case "circle":
-                  return <Circle {...props} />;
-                case "ellipse":
-                  return <Ellipse {...props} />;
-                case "text":
-                  return <Text {...props} />;
-                case "image":
-                  return <Image {...props} />;
-
-                default:
-                  break;
-              }
+              
+             return <ShapeItem key={i} props={props} isSelected={actif == i} node={node} index={i}/>
             })}
           </Layer>
         </Stage>
@@ -91,3 +74,36 @@ const Board = ({ stageRef }: BoardProps) => {
 };
 
 export default Board;
+
+// type ShapeItemProps={
+//   node:TNode,i:number,actif:number,
+//   onClick:Function, onMouseOver:Function, onMouseLeave :Function,
+// }
+// const ShapeItem:FunctionComponent<ShapeItemProps>=({node,i,actif,onClick, onMouseOver, onMouseLeave}:ShapeItemProps)=>{
+//  const ref =useRef()
+
+// let Content
+// console.log(node.type);
+
+//   switch (node.type) {
+//     case "rect":
+//       return <Rect {...props} />;
+//     case "arc":
+//       return <Arc {...props} />;
+//     case "star":
+//       return <Star {...props} />;
+//     case "regularPolygon":
+//       return <RegularPolygon {...props} />;
+//     case "circle":
+//       return <Circle {...props} />;
+//     case "ellipse":
+//       return <Ellipse {...props} />;
+//     case "text":
+//       return <Text {...props} />;
+//     case "image":
+//       return <Image {...props} />;
+
+//     default:
+//       return <Rect {...props} />;
+//     }
+// }
