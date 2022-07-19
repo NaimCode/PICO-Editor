@@ -16,14 +16,20 @@ import { TNode } from "../../state/slices/boardSlice";
 type ShapeItemProps = {
   isSelected: boolean;
   props: any;
-  node:TNode,
-  index:number,
-  onChange:Function
+  node: TNode;
+  index: number;
+  onChange: Function;
 };
-const ShapeItem = ({ props, isSelected,node, index}: ShapeItemProps) => {
+const ShapeItem = ({
+  props,
+  isSelected,
+  node,
+  index,
+  onChange,
+}: ShapeItemProps) => {
   const [transforming, setTransforming] = useState(false);
 
-  const shapeRef = useRef();
+  const shapeRef = useRef<any>();
   const trRef = useRef<any>();
 
   useEffect(() => {
@@ -37,20 +43,40 @@ const ShapeItem = ({ props, isSelected,node, index}: ShapeItemProps) => {
 
   return (
     <>
-      <Rect ref={shapeRef} {...props} onTransformEnd={(e)=>{
-         console.log("Transforming");
-        console.log(e);
-        
-      }}/>
-      {isSelected && index!=0 && (
+      <Rect
+        ref={shapeRef}
+        {...props}
+        onTransformEnd={(e) => {
+          const node = shapeRef.current;
+          const scaleX = node.scaleX();
+          const scaleY = node.scaleY();
+          const x = node.x();
+          const y = node.y();
+          const rotation = node.rotation();
+          const skewX = node.skewX();
+          const skewY = node.skewY();
+          console.log(e);
+
+          onChange(index, {
+            x,
+            y,
+            scaleX,
+            scaleY,
+            skewX,
+            skewY,
+            rotation,
+          });
+        }}
+      />
+      {isSelected && index != 0 && (
         <Transformer
           ref={trRef}
           keepRatio={true}
-        //anchorFill="#00a1ff"
-        borderStroke="#00a1ff"
-        borderStrokeWidth={2}
-        centeredScaling
-        anchorCornerRadius={2}
+          //anchorFill="#00a1ff"
+          borderStroke="#00a1ff"
+          borderStrokeWidth={2}
+          centeredScaling
+          anchorCornerRadius={2}
           flipEnabled={true}
           useSingleNodeRotation={true}
           // enabledAnchors={[

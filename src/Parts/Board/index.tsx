@@ -62,6 +62,7 @@ const Board = ({ stageRef }: BoardProps) => {
                 onClick: (e: any) => onClick(i),
                 onMouseLeave: (e: any) => onMouseLeave(i),
                 onMouseOver: (e: any) => onMouseOver(i),
+               
                  onDragEnd:(e:any)=>onChange(i,{
                   x: e.target.x(),
                   y: e.target.y(),
