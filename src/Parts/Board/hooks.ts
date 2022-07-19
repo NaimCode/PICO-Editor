@@ -3,20 +3,25 @@ import { STAGE_REF } from "../../App/global";
 import { useAppDispatch } from "../../hooks";
 import { BoardAction } from "../../state/slices/boardSlice";
 
-export const useBoardSize = ({
-  ratio = "portrait",
-}: {
-  ratio?: "square" | "portrait" | "landscape";
-}) => {
-  const ref = useRef(null);
-  const dispatch=useAppDispatch()
-  const [isReadyStage, setisReadyStage] = useState<Boolean>(false);
-  const [dimension, setdimension] = useState<{ width: number; height: number }>(
-    { width: 0, height: 0 }
-  );
-  useEffect(() => {
-   
-  }, [ref]);
 
-  return {ref};
-};
+export const useNodeEvent=()=>{
+const dispatch = useAppDispatch();
+  const onMouseOver = (index: number) => {
+    document.body.style.cursor = "pointer";
+    dispatch(
+      BoardAction.updateNode({ index, property: "strokeEnabled", value: true })
+    );
+  };
+  const onMouseLeave = (index: number) => {
+    document.body.style.cursor = "default";
+    dispatch(
+      BoardAction.updateNode({ index, property: "strokeEnabled", value: false })
+    );
+  };
+  const onClick = (index: number) => {
+    dispatch(BoardAction.SelectNode(index));
+  };
+
+  return {onMouseLeave,onClick,onMouseOver }
+}
+
