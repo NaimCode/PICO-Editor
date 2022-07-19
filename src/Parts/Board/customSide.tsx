@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   BoardAction,
@@ -6,6 +6,8 @@ import {
   SelectBoardNodes,
   TNode,
 } from "../../state/slices/boardSlice";
+import { CgColorBucket as FillIcon } from 'react-icons/cg';
+import { Tooltip } from "@geist-ui/core";
 
 const CustomSide = () => {
   const dispatch = useAppDispatch();
@@ -28,9 +30,15 @@ const EditNode=({node}:{node:TNode})=>{
 switch (node.type) {
   case "rect":
     
-  return  (<></>)
+  return  (<><FillButton/> <input type={"color"}/></>)
 
   default:
    return <div>rine</div>
 }
+}
+
+const FillButton=()=>{
+
+  return <button  className="flex flex-col items-center justify-center gap-1 hover:bg-gray-100/60 w-[40px] h-[40px] rounded-sm text-lg"><FillIcon/><div className="h-[6px] w-[20px] bg-blue-200"></div> </button>
+ 
 }
