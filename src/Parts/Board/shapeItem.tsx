@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Rect, Transformer } from "react-konva";
+import {
+  Arc,
+  Circle,
+  Ellipse,
+  Rect,
+  RegularPolygon,
+  Star,
+  Transformer,
+} from "react-konva";
 import { TNode } from "../../state/slices/boardSlice";
 
 // const props = {
@@ -41,33 +49,41 @@ const ShapeItem = ({
     }
   }, [isSelected]);
 
+  const shapeProps = {
+    ...props,
+    ref: shapeRef,
+
+    onTransformEnd: (e: any) => {
+      const node = shapeRef.current;
+      const scaleX = node.scaleX();
+      const scaleY = node.scaleY();
+      const x = node.x();
+      const y = node.y();
+      const rotation = node.rotation();
+      const skewX = node.skewX();
+      const skewY = node.skewY();
+      console.log(e);
+
+      onChange(index, {
+        x,
+        y,
+        scaleX,
+        scaleY,
+        skewX,
+        skewY,
+        rotation,
+      });
+    },
+  };
+
   return (
     <>
-      <Rect
-        ref={shapeRef}
-        {...props}
-        onTransformEnd={(e) => {
-          const node = shapeRef.current;
-          const scaleX = node.scaleX();
-          const scaleY = node.scaleY();
-          const x = node.x();
-          const y = node.y();
-          const rotation = node.rotation();
-          const skewX = node.skewX();
-          const skewY = node.skewY();
-          console.log(e);
-
-          onChange(index, {
-            x,
-            y,
-            scaleX,
-            scaleY,
-            skewX,
-            skewY,
-            rotation,
-          });
-        }}
-      />
+      {node.type == "rect" && <Rect {...shapeProps} />}
+      {node.type == "arc" && <Arc {...shapeProps} />}
+      {node.type == "star" && <Star {...shapeProps} />}
+      {node.type == "ellipse" && <Ellipse {...shapeProps} />}
+      {node.type == "regularPolygon" && <RegularPolygon {...shapeProps} />}
+      {node.type == "circle" && <Circle {...shapeProps} />}
       {isSelected && index != 0 && (
         <Transformer
           ref={trRef}

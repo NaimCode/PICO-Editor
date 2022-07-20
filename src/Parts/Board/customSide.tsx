@@ -10,6 +10,19 @@ import {
   CgColorBucket as FillIcon,
   CgDropOpacity as OpacityIcon,
 } from "react-icons/cg";
+import {
+  BsLayers as LayerIcon,
+  BsChevronDoubleDown as LayerBackIcon,
+  BsChevronDoubleUp as LayerTopIcon,
+  BsChevronDown as LayerBackSingleIcon,
+  BsChevronUp as LayerTopSingleIcon,
+} from "react-icons/bs";
+import {
+  HiOutlineDuplicate as DuplicateIcon,
+} from "react-icons/hi";
+import {
+  AiOutlineDelete as DeleteIcon,
+} from "react-icons/ai";
 import { Popover, Slider, Spacer, Tooltip } from "@geist-ui/core";
 import { Link } from "react-router-dom";
 
@@ -37,11 +50,22 @@ const EditNode = ({ node }: { node: TNode }) => {
         <>
           <FillButton node={node} />
           <OpacityButton node={node} />
+          <div className="flex-grow"></div>
+          <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+          <LayerButton node={node} />
+          <DuplicateButton/>
+          <DeleteButton/>
         </>
       );
   }
 };
 
+const DuplicateButton=()=>{
+  return <button className="iconButton text-lg"><DuplicateIcon/> </button>
+}
+const DeleteButton=()=>{
+  return <button className="iconButton text-lg"><DeleteIcon/> </button>
+}
 const FillButton = ({ node }: { node: TNode }) => {
   const dispath = useAppDispatch();
 
@@ -83,6 +107,36 @@ const OpacityButton = ({ node }: { node: TNode }) => {
   return (
     <Popover content={content} className="iconButton text-lg">
       <OpacityIcon />
+    </Popover>
+  );
+};
+
+const LayerButton = ({ node }: { node: TNode }) => {
+  const dispath = useAppDispatch();
+
+  const content = () => (
+    <div className="w-[200px]  px-2   text-sm">
+      <Popover.Item className="flex flex-row gap-3 hover:bg-gray-100 items-center cursor-pointer">
+        <LayerTopIcon className="text-lg" /> <span>Bring to front</span>
+      </Popover.Item>
+      <Popover.Item className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+        <LayerTopSingleIcon className="text-lg" /> <span>Bring forward</span>
+      </Popover.Item>
+      <Popover.Item className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+        <LayerBackSingleIcon className="text-lg" /> <span>Bring backward</span>
+      </Popover.Item>
+      <Popover.Item className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+        <LayerBackIcon className="text-lg" /> <span>Bring to back</span>
+      </Popover.Item>
+    </div>
+  );
+  return (
+    <Popover
+      placement="bottomEnd"
+      content={content}
+      className="iconButton text-lg"
+    >
+      <LayerIcon />
     </Popover>
   );
 };

@@ -43,11 +43,11 @@ const Board = ({ stageRef }: BoardProps) => {
       <CustomSide />
       <div className="overflow-scroll  flex-grow flex flex-col items-center justify-center p-5">
         <Stage
-          ref={stageRef}
+          
           width={nodes[0].props.width}
           height={nodes[0].props.height}
         >
-          <Layer>
+          <Layer ref={stageRef}>
             {nodes.map((node, i) =>{
              
                 const strokeEnabled =
