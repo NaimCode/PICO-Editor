@@ -16,23 +16,47 @@ import {
   BsChevronDoubleUp as LayerTopIcon,
   BsChevronDown as LayerBackSingleIcon,
   BsChevronUp as LayerTopSingleIcon,
+  BsArrow90DegLeft as UndoIcon,
+  BsArrow90DegRight as RedoIcon,
 } from "react-icons/bs";
-import {
-  HiOutlineDuplicate as DuplicateIcon,
-} from "react-icons/hi";
-import {
-  AiOutlineDelete as DeleteIcon,
-} from "react-icons/ai";
+import { HiOutlineDuplicate as DuplicateIcon } from "react-icons/hi";
+import { AiOutlineDelete as DeleteIcon } from "react-icons/ai";
 import { Popover, Slider, Spacer, Tooltip } from "@geist-ui/core";
 import { Link } from "react-router-dom";
 
 const CustomSide = () => {
   const actif = useAppSelector(SelectBoardActifNode);
   const node = useAppSelector(SelectBoardNodes)[actif!];
-
+  const dispatch = useAppDispatch();
   return (
-    <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-3">
-      {node && <EditNode node={node} />}
+    <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-1">
+      <button className="iconButton cursor-not-allowed text-opacity-50">
+        <UndoIcon />
+      </button>
+      <button className="iconButton">
+        <RedoIcon />
+      </button>
+      <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+      {node && (
+        <>
+          <EditNode node={node} />
+          <div className="flex-grow"></div>
+          {actif != 0 && (
+            <>
+              <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+              <LayerButton onChangeLayerPosition={(position:1|2|-1|2)=>{
+                dispatch(BoardAction.UpdateShapeOrder(position))
+              }} />
+              <DuplicateButton  onDuplice={()=>{
+                dispatch(BoardAction.DuplicateShape())
+              }}/>
+              <DeleteButton onDelete={()=>{
+                dispatch(BoardAction.DeleteShape())
+              }}/>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 };
@@ -50,23 +74,29 @@ const EditNode = ({ node }: { node: TNode }) => {
         <>
           <FillButton node={node} />
           <OpacityButton node={node} />
-          <div className="flex-grow"></div>
-          <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
-          <LayerButton node={node} />
-          <DuplicateButton/>
-          <DeleteButton/>
         </>
       );
   }
 };
 
-const DuplicateButton=()=>{
-  return <button className="iconButton text-lg"><DuplicateIcon/> </button>
-}
-const DeleteButton=()=>{
-  const dispatch = useAppDispatch();
-  return <button onClick={()=>dispatch(BoardAction.DeleteShape())} className="iconButton text-lg"><DeleteIcon/> </button>
-}
+const DuplicateButton = ({onDuplice}:{onDuplice:any}) => {
+  return (
+    <button onClick={onDuplice} className="iconButton text-lg">
+      <DuplicateIcon />
+    </button>
+  );
+};
+const DeleteButton = ({onDelete}:{onDelete:any}) => {
+
+  return (
+    <button
+      onClick={onDelete}
+      className="iconButton text-lg"
+    >
+      <DeleteIcon />{" "}
+    </button>
+  );
+};
 const FillButton = ({ node }: { node: TNode }) => {
   const dispath = useAppDispatch();
 
@@ -112,21 +142,21 @@ const OpacityButton = ({ node }: { node: TNode }) => {
   );
 };
 
-const LayerButton = ({ node }: { node: TNode }) => {
-  const dispath = useAppDispatch();
+const LayerButton = ({onChangeLayerPosition }: { onChangeLayerPosition: any }) => {
+
 
   const content = () => (
     <div className="w-[200px]  px-2   text-sm">
-      <Popover.Item className="flex flex-row gap-3 hover:bg-gray-100 items-center cursor-pointer">
+      <Popover.Item onClick={()=>onChangeLayerPosition(2)} className="flex flex-row gap-3 hover:bg-gray-100 items-center cursor-pointer">
         <LayerTopIcon className="text-lg" /> <span>Bring to front</span>
       </Popover.Item>
-      <Popover.Item className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+      <Popover.Item onClick={()=>onChangeLayerPosition(1)} className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
         <LayerTopSingleIcon className="text-lg" /> <span>Bring forward</span>
       </Popover.Item>
-      <Popover.Item className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+      <Popover.Item onClick={()=>onChangeLayerPosition(-1)} className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
         <LayerBackSingleIcon className="text-lg" /> <span>Bring backward</span>
       </Popover.Item>
-      <Popover.Item className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+      <Popover.Item onClick={()=>onChangeLayerPosition(-2)} className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
         <LayerBackIcon className="text-lg" /> <span>Bring to back</span>
       </Popover.Item>
     </div>

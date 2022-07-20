@@ -33,6 +33,7 @@ const Shapes = () => {
         {ListShapes.map((shape, i) => {
           return (
             <Stage
+            key={i}
             onClick={(e)=>{
               dispatch(BoardAction.AddNode({type:shape.type,props:shape.props}))
             }}

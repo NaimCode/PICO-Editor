@@ -1,11 +1,12 @@
 import React, { FunctionComponent, ReactNode } from 'react'
 
 type IconButtonProps={
-    icon:ReactNode
+    icon:ReactNode,
+     props?:any
 }
-const IconButton:FunctionComponent<IconButtonProps> = ({icon}:IconButtonProps) => {
+const IconButton:FunctionComponent<IconButtonProps> = ({icon,props}:IconButtonProps) => {
   return (
-    <button className='text-white/60 hover:text-white p-1 '>
+    <button {...props} className='text-white/60 hover:text-white p-1 text-lg'>
         {icon}
     </button>
   )
