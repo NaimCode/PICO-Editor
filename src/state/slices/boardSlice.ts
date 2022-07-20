@@ -4,7 +4,7 @@ import { RootState } from "../index";
 
 
 type TProperty= 'fill'| 'opacity'
-export type TNodeType= "image" | "rect" | "text" | "regularPolygon" |"star" |"ellipse" |"circle" |"arc"
+export type TNodeType="layer" |"image" | "rect" | "text" | "regularPolygon" |"star" |"ellipse" |"circle" |"arc"
 type TDimension = {
   width: number;
   height: number;
@@ -33,12 +33,27 @@ const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
+    NewProject: (
+      state: TBoard
+    ) => {
+
+      state.nodes=initialState.nodes;
+      state.nodeActif=undefined
+   
+    },
     AddNode: (
       state: TBoard,
       action: PayloadAction<TNode>
     ) => {
       state.nodes.push(action.payload);
    
+    },
+    DeleteShape: (
+      state: TBoard
+    ) => {
+  
+      state.nodes.splice(state.nodeActif!,1)
+      state.nodeActif = undefined;
     },
     SelectNode: (
         state: TBoard,

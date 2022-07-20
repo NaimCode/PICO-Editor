@@ -4,7 +4,8 @@ import {BsDownload as ExportIcon,BsPencil as EditIcon, BsCheck2Circle as CheckIc
 import Button from "../Components/button";
 import IconButton from "../Components/iconButton";
 import Logo from "../Components/LogoBrand";
-import { useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { BoardAction } from "../state/slices/boardSlice";
 
 function downloadURI(uri:any, name:string) {
     var link = document.createElement('a');
@@ -19,7 +20,7 @@ type NavBarProps={
     stageRef:RefObject<any>
 }
 const NavBar = ({stageRef}:NavBarProps) => {
-  
+  const dispatch=useAppDispatch()
 
   const handleExport = () => {
   if(stageRef.current){
@@ -28,6 +29,9 @@ const NavBar = ({stageRef}:NavBarProps) => {
    downloadURI(uri, 'stage.png');
   }
   };
+  const handleNewProject=()=>{
+    dispatch(BoardAction.NewProject())
+  }
   return (
     <div className="min-h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
       <div className="flex flex-row items-center">
@@ -35,8 +39,11 @@ const NavBar = ({stageRef}:NavBarProps) => {
         <ProjectName />
       </div>
       <div className="flex-grow flex flex-row gap-1 px-4 items-center">
-        <IconButton icon={ <UndoIcon/>}/>
-        <IconButton icon={ <RedoIcon/>}/>
+      <button onClick={handleNewProject} className="transition-all flex flex-row gap-2 opacity-80 items-center hover:opacity-100 border-[rgb(231,231,232)] text-[rgb(231,231,232)] border-[1px]  f py-2 px-4 rounded-md ">
+          
+            <span className=" text-[14px]">New project</span></button>
+        {/* <IconButton icon={ <UndoIcon/>}/>
+        <IconButton icon={ <RedoIcon/>}/> */}
         <div className="flex-grow"></div>
         <IconButton icon={ <ZoomOutIcon/>}/>
       <span className="text-white/90 text-sm">  100%</span>

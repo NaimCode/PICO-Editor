@@ -64,7 +64,8 @@ const DuplicateButton=()=>{
   return <button className="iconButton text-lg"><DuplicateIcon/> </button>
 }
 const DeleteButton=()=>{
-  return <button className="iconButton text-lg"><DeleteIcon/> </button>
+  const dispatch = useAppDispatch();
+  return <button onClick={()=>dispatch(BoardAction.DeleteShape())} className="iconButton text-lg"><DeleteIcon/> </button>
 }
 const FillButton = ({ node }: { node: TNode }) => {
   const dispath = useAppDispatch();
