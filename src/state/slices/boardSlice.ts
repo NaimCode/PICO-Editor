@@ -20,7 +20,7 @@ type TDimension = {
 export type TNode = {
   type: TNodeType;
   props: any;
-  lock?:boolean
+  lock?: boolean;
 };
 type TStage = {
   dimension: TDimension;
@@ -28,36 +28,49 @@ type TStage = {
 };
 type TBoard = {
   nodeActif?: number;
-  nodes: Array<TNode>;
+  undo: number;
+  nodes: Array<Array<TNode>>;
 };
 const initialState: TBoard = {
+  undo: 0,
   nodes: [
-    {
-      type: "rect",
-      props: { fill: "white", width: 420, height: 600 },
-    },
+    [
+      {
+        type: "rect",
+        props: { fill: "white", width: 420, height: 600 },
+      },
+    ],
   ],
 };
 const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
+    UndoRedo: (state: TBoard, action: PayloadAction<"undo" | "redo">) => {
+      if (action.payload == "undo") {
+        console.log("undo");
+        if (state.undo > 0) state.undo = state.undo - 1;
+      }
+      if (action.payload == "redo") {
+        console.log("redo");
+        if (state.undo < state.nodes.length - 1) state.undo = state.undo + 1;
+      }
+    },
     NewProject: (state: TBoard) => {
       state.nodes = initialState.nodes;
       state.nodeActif = undefined;
-
+      state.undo=0
     },
-    AddNode: (state: TBoard, action: PayloadAction<TNode>) => {
-      state.nodes.push(action.payload);
-    },
+    AddNode: (state: TBoard, action: PayloadAction<TNode>) =>
+      RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
+        nodes.push(action.payload);
+      }),
     DeleteShape: (state: TBoard) => {
       state.nodes.splice(state.nodeActif!, 1);
       state.nodeActif = undefined;
     },
-    LockShape: (
-      state: TBoard
-    ) => {
-      state.nodes[state.nodeActif!].lock=!state.nodes[state.nodeActif!].lock
+    LockShape: (state: TBoard) => {
+      // state.nodes[state.nodeActif!].lock=!state.nodes[state.nodeActif!].lock
     },
     UpdateShapeOrder: (
       state: TBoard,
@@ -70,14 +83,14 @@ const boardSlice = createSlice({
         state.nodeActif = state.nodes.indexOf(node);
       }
 
-      if (action.payload == 1&& state.nodeActif!<state.nodes.length ) {
-          const tempNode=state.nodes.splice(state.nodeActif!, 1)[0];
-           state.nodes.splice(state.nodeActif!+1,0,tempNode)
-          state.nodeActif!++;
+      if (action.payload == 1 && state.nodeActif! < state.nodes.length) {
+        const tempNode = state.nodes.splice(state.nodeActif!, 1)[0];
+        state.nodes.splice(state.nodeActif! + 1, 0, tempNode);
+        state.nodeActif!++;
       }
-      if (action.payload == -1 && state.nodeActif!>1) {
-        const tempNode=state.nodes.splice(state.nodeActif!, 1)[0];
-         state.nodes.splice(state.nodeActif!-1,0,tempNode)
+      if (action.payload == -1 && state.nodeActif! > 1) {
+        const tempNode = state.nodes.splice(state.nodeActif!, 1)[0];
+        state.nodes.splice(state.nodeActif! - 1, 0, tempNode);
         state.nodeActif!--;
       }
       if (action.payload == -2) {
@@ -89,15 +102,15 @@ const boardSlice = createSlice({
       }
     },
     DuplicateShape: (state: TBoard) => {
-      const node = state.nodes[state.nodeActif!];
-      state.nodes.push({
-        type: node.type,
-        props: {
-          ...node.props,
-          x: node.props.x || 0 + 20,
-          y: node.props.y || 0 + 20,
-        },
-      });
+      // const node = state.nodes[state.nodeActif!];
+      // state.nodes.push({
+      //   type: node.type,
+      //   props: {
+      //     ...node.props,
+      //     x: node.props.x || 0 + 20,
+      //     y: node.props.y || 0 + 20,
+      //   },
+      // });
     },
     SelectNode: (state: TBoard, action: PayloadAction<number>) => {
       state.nodeActif = action.payload;
@@ -106,14 +119,14 @@ const boardSlice = createSlice({
       state: TBoard,
       action: PayloadAction<{ index?: number; value: any }>
     ) => {
-      const { index, value } = action.payload;
-      if (index)
-        state.nodes[index].props = { ...state.nodes[index].props, ...value };
-      else
-        state.nodes[state.nodeActif!].props = {
-          ...state.nodes[state.nodeActif!].props,
-          ...value,
-        };
+      // const { index, value } = action.payload;
+      // if (index)
+      //   state.nodes[index].props = { ...state.nodes[index].props, ...value };
+      // else
+      //   state.nodes[state.nodeActif!].props = {
+      //     ...state.nodes[state.nodeActif!].props,
+      //     ...value,
+      //   };
     },
 
     updateNode: (
@@ -124,15 +137,30 @@ const boardSlice = createSlice({
         property: any | TProperty;
       }>
     ) => {
-      const { index, value, property } = action.payload;
-      if (index) state.nodes[index].props[property] = value;
-      else state.nodes[state.nodeActif!].props[property] = value;
+      // const { index, value, property } = action.payload;
+      // if (index) state.nodes[index].props[property] = value;
+      // else state.nodes[state.nodeActif!].props[property] = value;
     },
   },
 });
 
+const RedoUndoFeatures = (
+  state: TBoard,
+  action: PayloadAction<any>,
+  funct: Function
+) => {
+  state.nodes = state.nodes.filter((n, i) => i <= state.undo);
+  const nodes = [...state.nodes[state.undo]];
+  //
+  funct(nodes);
+  //
+  if(state.nodes.length>=10) state.nodes.splice(0,1)
+  state.nodes.push(nodes);
+  state.undo = state.nodes.length - 1;
+};
 export const BoardAction = boardSlice.actions;
 export const SelectBoard = (state: RootState) => state.board;
-export const SelectBoardNodes = (state: RootState) => state.board.nodes;
+export const SelectBoardNodes = (state: RootState) =>
+  state.board.nodes[state.board.undo];
 export const SelectBoardActifNode = (state: RootState) => state.board.nodeActif;
 export default boardSlice.reducer;

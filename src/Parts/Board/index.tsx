@@ -21,6 +21,7 @@ import { useElementSize } from "use-element-size";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   BoardAction,
+  SelectBoard,
   SelectBoardActifNode,
   SelectBoardNodes,
   TNode,
@@ -33,10 +34,10 @@ type BoardProps = {
   stageRef: RefObject<any>;
 };
 const Board = ({ stageRef }: BoardProps) => {
-  const nodes = useAppSelector(SelectBoardNodes);
-  const actif = useAppSelector(SelectBoardActifNode);
+  const {nodes, nodeActif:actif,undo} = useAppSelector(SelectBoard);
 
   const { onClick, onMouseOver, onMouseLeave,onChange } = useNodeEvent();
+console.log(nodes);
 
   return (
     <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden">
@@ -44,11 +45,11 @@ const Board = ({ stageRef }: BoardProps) => {
       <div className="overflow-scroll  flex-grow flex flex-col items-center justify-center p-5">
         <Stage
           
-          width={nodes[0].props.width}
-          height={nodes[0].props.height}
+          width={nodes[undo][0].props.width}
+          height={nodes[undo][0].props.height}
         >
           <Layer ref={stageRef}>
-            {nodes.map((node, i) =>{
+            {nodes[undo].map((node, i) =>{
              
                 const strokeEnabled =
                 actif == i ? true : node.props.strokeEnabled ? true : false;
