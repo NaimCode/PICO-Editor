@@ -50,7 +50,9 @@ const ShapeItem = ({
   }, [isSelected]);
 
   const shapeProps = {
+
     ...props,
+    
     ref: shapeRef,
 
     onTransformEnd: (e: any) => {
@@ -62,8 +64,6 @@ const ShapeItem = ({
       const rotation = node.rotation();
       const skewX = node.skewX();
       const skewY = node.skewY();
-      console.log(e);
-
       onChange(index, {
         x,
         y,
@@ -87,10 +87,13 @@ const ShapeItem = ({
       {isSelected && index != 0 && (
         <Transformer
           ref={trRef}
+       
           keepRatio={true}
           //anchorFill="#00a1ff"
           borderStroke="#00a1ff"
           borderStrokeWidth={2}
+          resizeEnabled={!node.lock}
+          rotateEnabled={!node.lock}
           centeredScaling
           anchorCornerRadius={2}
           flipEnabled={true}

@@ -19,7 +19,7 @@ import {
   BsArrow90DegLeft as UndoIcon,
   BsArrow90DegRight as RedoIcon,
 } from "react-icons/bs";
-import { HiOutlineDuplicate as DuplicateIcon } from "react-icons/hi";
+import { HiOutlineDuplicate as DuplicateIcon, HiOutlineLockClosed as LockIcon } from "react-icons/hi";
 import { AiOutlineDelete as DeleteIcon } from "react-icons/ai";
 import { Popover, Slider, Spacer, Tooltip } from "@geist-ui/core";
 import { Link } from "react-router-dom";
@@ -47,7 +47,10 @@ const CustomSide = () => {
               <LayerButton onChangeLayerPosition={(position:1|2|-1|2)=>{
                 dispatch(BoardAction.UpdateShapeOrder(position))
               }} />
-              <DuplicateButton  onDuplice={()=>{
+               <LockButton node={node} onLock={()=>{
+                dispatch(BoardAction.LockShape())
+              }}/>
+              <DuplicateButton   onDuplice={()=>{
                 dispatch(BoardAction.DuplicateShape())
               }}/>
               <DeleteButton onDelete={()=>{
@@ -86,6 +89,13 @@ const DuplicateButton = ({onDuplice}:{onDuplice:any}) => {
     </button>
   );
 };
+const LockButton = ({onLock,node}:{onLock:any,node:TNode}) => {
+  return (
+    <button style={{backgroundColor: node.lock? "rgb(229 231 235 / 0.6)":"" }} onClick={onLock} className="iconButton text-lg">
+      <LockIcon />
+    </button>
+  );
+};
 const DeleteButton = ({onDelete}:{onDelete:any}) => {
 
   return (
@@ -93,7 +103,7 @@ const DeleteButton = ({onDelete}:{onDelete:any}) => {
       onClick={onDelete}
       className="iconButton text-lg"
     >
-      <DeleteIcon />{" "}
+      <DeleteIcon />
     </button>
   );
 };

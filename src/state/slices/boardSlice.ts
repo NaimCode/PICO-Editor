@@ -20,6 +20,7 @@ type TDimension = {
 export type TNode = {
   type: TNodeType;
   props: any;
+  lock?:boolean
 };
 type TStage = {
   dimension: TDimension;
@@ -44,6 +45,7 @@ const boardSlice = createSlice({
     NewProject: (state: TBoard) => {
       state.nodes = initialState.nodes;
       state.nodeActif = undefined;
+
     },
     AddNode: (state: TBoard, action: PayloadAction<TNode>) => {
       state.nodes.push(action.payload);
@@ -51,6 +53,11 @@ const boardSlice = createSlice({
     DeleteShape: (state: TBoard) => {
       state.nodes.splice(state.nodeActif!, 1);
       state.nodeActif = undefined;
+    },
+    LockShape: (
+      state: TBoard
+    ) => {
+      state.nodes[state.nodeActif!].lock=!state.nodes[state.nodeActif!].lock
     },
     UpdateShapeOrder: (
       state: TBoard,

@@ -120,6 +120,7 @@ const ListShapes: Array<TShape> = [
       ...propShape,
       ...centerShape,
       angle: 180,
+      
       innerRadius: 50,
       outerRadius: 30,
     },

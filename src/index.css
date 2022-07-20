@@ -7,6 +7,8 @@
         @apply  outline-none
     }
     .iconButton{
-        @apply rounded-md cursor-pointer text-black  w-[30px] h-[30px]  hover:bg-gray-100/60 flex items-center justify-center !important
+        @apply transition-all text-lg rounded-md cursor-pointer text-black  w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center !important
     }
+  
+
 }

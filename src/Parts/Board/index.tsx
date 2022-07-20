@@ -55,7 +55,7 @@ const Board = ({ stageRef }: BoardProps) => {
               const props = {
                 key: i,
                 ...node.props,
-                draggable:i!=0?true:false,
+                draggable:i!=0?!node.lock:false,
                 // stroke: "#00a1ff",
                 // strokeWidth: 2,
                 // strokeEnabled: strokeEnabled,
