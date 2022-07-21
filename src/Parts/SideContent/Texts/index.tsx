@@ -44,9 +44,8 @@ const Texts = () => {
   const handleAddText=(props:any)=>{
     const communProps={
         ...props,
-        fontSize:20,
         fill:"black",
-        text:"Add a header"
+        
     }
     dispatch(BoardAction.AddNode({type:"text",props:communProps}))
   }
@@ -54,13 +53,13 @@ const Texts = () => {
     <SideContent>
       <span className="text-white text-sm font-semibold">Basic text</span>
       <div className="flex flex-col gap-3 p-2">
-        <button style={{fontSize:30,fontWeight: 600 }} onClick={()=>handleAddText({})} className="transition-all py-4 px-3 text-3xl font-semibold bg-[#1f2021] hover:bg-[#292929]/50  text-left text-white border-2 border-[#292929] rounded-lg">
+        <button onClick={()=>handleAddText({  fontSize:30,text:"Add a header",fontVariant:"bold"})} className="transition-all py-4 px-3 text-3xl font-semibold bg-[#1f2021] hover:bg-[#292929]/50  text-left text-white border-2 border-[#292929] rounded-lg">
           Add a header
         </button>
-        <button className="transition-all py-4 px-3 text-xl bg-[#1f2021] hover:bg-[#292929]/50  text-left text-white border-2 border-[#292929] rounded-lg">
+        <button onClick={()=>handleAddText({  fontSize:20,text:"Add a subheader",fontVariant:"bold"})}  className="transition-all py-4 px-3 text-xl bg-[#1f2021] hover:bg-[#292929]/50  text-left text-white border-2 border-[#292929] rounded-lg">
           Add a subheader
         </button>
-        <button className="transition-all font-light py-3 px-3 bg-[#1f2021] hover:bg-[#292929]/50  text-left text-white border-2 border-[#292929] rounded-lg">
+        <button onClick={()=>handleAddText({  fontSize:16,text:"Add a paragraph"})}  className="transition-all font-light py-3 px-3 bg-[#1f2021] hover:bg-[#292929]/50  text-left text-white border-2 border-[#292929] rounded-lg">
           Add a paragraph
         </button>
       </div>

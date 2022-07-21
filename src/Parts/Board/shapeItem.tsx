@@ -79,7 +79,7 @@ const ShapeItem = ({
 
   return (
     <>
-      {node.type == "text" && <Text{...shapeProps} />}
+      {node.type == "text" && <Text {...shapeProps} />}
       {(node.type == "rect" ||node.type == "layer") && <Rect {...shapeProps} />}
       {node.type == "arc" && <Arc {...shapeProps} />}
       {node.type == "star" && <Star {...shapeProps} />}
