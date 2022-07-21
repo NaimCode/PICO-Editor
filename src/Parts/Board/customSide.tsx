@@ -12,6 +12,10 @@ import {
   CgDropOpacity as OpacityIcon,
 } from "react-icons/cg";
 import {
+  BsTypeBold as BoldIcon,
+  BsTypeItalic as ItalicIcon,
+  BsTypeUnderline as UnderlineIcon,
+  BsTextareaT as TextColorIcon,
   BsLayers as LayerIcon,
   BsChevronDoubleDown as LayerBackIcon,
   BsChevronDoubleUp as LayerTopIcon,
@@ -20,22 +24,39 @@ import {
   BsArrow90DegLeft as UndoIcon,
   BsArrow90DegRight as RedoIcon,
 } from "react-icons/bs";
-import { HiOutlineDuplicate as DuplicateIcon, HiOutlineLockClosed as LockIcon } from "react-icons/hi";
+import {
+  HiOutlineDuplicate as DuplicateIcon,
+  HiOutlineLockClosed as LockIcon,
+} from "react-icons/hi";
 import { AiOutlineDelete as DeleteIcon } from "react-icons/ai";
 import { Popover, Slider, Spacer, Tooltip } from "@geist-ui/core";
 import { Link } from "react-router-dom";
 
 const CustomSide = () => {
-  const {nodeActif:actif,nodes,undo} = useAppSelector(SelectBoard);
+  const { nodeActif: actif, nodes, undo } = useAppSelector(SelectBoard);
   const node = useAppSelector(SelectBoardNodes)[actif!];
   const dispatch = useAppDispatch();
 
   return (
     <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-1">
-      <button style={{cursor:undo<=0?'not-allowed':'pointer', opacity:undo<=0?.5:1}} onClick={()=>dispatch(BoardAction.UndoRedo("undo"))} className="transition-all text-lg rounded-md  text-black  w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center">
+      <button
+        style={{
+          cursor: undo <= 0 ? "not-allowed" : "pointer",
+          opacity: undo <= 0 ? 0.5 : 1,
+        }}
+        onClick={() => dispatch(BoardAction.UndoRedo("undo"))}
+        className="transition-all text-lg rounded-md  text-black  w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center"
+      >
         <UndoIcon />
       </button>
-      <button style={{cursor:undo<nodes.length - 1?'pointer':'not-allowed', opacity:undo<nodes.length - 1?1:.5}} onClick={()=>dispatch(BoardAction.UndoRedo("redo"))} className="transition-all text-lg rounded-md  text-black  w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center">
+      <button
+        style={{
+          cursor: undo < nodes.length - 1 ? "pointer" : "not-allowed",
+          opacity: undo < nodes.length - 1 ? 1 : 0.5,
+        }}
+        onClick={() => dispatch(BoardAction.UndoRedo("redo"))}
+        className="transition-all text-lg rounded-md  text-black  w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center"
+      >
         <RedoIcon />
       </button>
       <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
@@ -46,18 +67,27 @@ const CustomSide = () => {
           {actif != 0 && (
             <>
               <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
-              <LayerButton onChangeLayerPosition={(position:1|2|-1|2)=>{
-                dispatch(BoardAction.UpdateShapeOrder(position))
-              }} />
-               <LockButton node={node} onLock={()=>{
-                dispatch(BoardAction.LockShape())
-              }}/>
-              <DuplicateButton   onDuplice={()=>{
-                dispatch(BoardAction.DuplicateShape({}))
-              }}/>
-              <DeleteButton onDelete={()=>{
-                dispatch(BoardAction.DeleteShape({}))
-              }}/>
+              <LayerButton
+                onChangeLayerPosition={(position: 1 | 2 | -1 | 2) => {
+                  dispatch(BoardAction.UpdateShapeOrder(position));
+                }}
+              />
+              <LockButton
+                node={node}
+                onLock={() => {
+                  dispatch(BoardAction.LockShape());
+                }}
+              />
+              <DuplicateButton
+                onDuplice={() => {
+                  dispatch(BoardAction.DuplicateShape({}));
+                }}
+              />
+              <DeleteButton
+                onDelete={() => {
+                  dispatch(BoardAction.DeleteShape({}));
+                }}
+              />
             </>
           )}
         </>
@@ -73,7 +103,14 @@ const EditNode = ({ node }: { node: TNode }) => {
     case "image":
       return <div>empty</div>;
     case "text":
-      return <div>empty</div>;
+      return (
+        <>
+          <FillButton text node={node} />
+          <OpacityButton node={node} />
+          <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+          <TextButton />
+        </>
+      );
     default:
       return (
         <>
@@ -84,36 +121,52 @@ const EditNode = ({ node }: { node: TNode }) => {
   }
 };
 
-const DuplicateButton = ({onDuplice}:{onDuplice:any}) => {
+const TextButton = () => {
+  
+  return (
+    <>
+      <button className="iconButton text-lg">
+        <BoldIcon />
+      </button>
+      <button className="iconButton text-lg">
+        <ItalicIcon />
+      </button>
+      <button className="iconButton text-lg">
+        <UnderlineIcon />
+      </button>
+    </>
+  );
+};
+const DuplicateButton = ({ onDuplice }: { onDuplice: any }) => {
   return (
     <button onClick={onDuplice} className="iconButton text-lg">
       <DuplicateIcon />
     </button>
   );
 };
-const LockButton = ({onLock,node}:{onLock:any,node:TNode}) => {
+const LockButton = ({ onLock, node }: { onLock: any; node: TNode }) => {
   return (
-    <button style={{backgroundColor: node.lock? "rgb(229 231 235 / 0.6)":"" }} onClick={onLock} className="iconButton text-lg">
+    <button
+      style={{ backgroundColor: node.lock ? "rgb(229 231 235 / 0.6)" : "" }}
+      onClick={onLock}
+      className="iconButton text-lg"
+    >
       <LockIcon />
     </button>
   );
 };
-const DeleteButton = ({onDelete}:{onDelete:any}) => {
-
+const DeleteButton = ({ onDelete }: { onDelete: any }) => {
   return (
-    <button
-      onClick={onDelete}
-      className="iconButton text-lg"
-    >
+    <button onClick={onDelete} className="iconButton text-lg">
       <DeleteIcon />
     </button>
   );
 };
-const FillButton = ({ node }: { node: TNode }) => {
+const FillButton = ({ node, text }: { node: TNode; text?: boolean }) => {
   const dispath = useAppDispatch();
 
   return (
-    <div className="relative  flex flex-col items-center justify-center iconButton gap-1 rounded-sm text-lg">
+    <div className="relative  flex flex-col items-center justify-center iconButton gap-[2px] rounded-sm text-lg">
       <input
         className="cursor-pointer rounded-md border-none bg-transparent opacity-0 w-[40px] h-[40px] absolute top-0 left-0"
         type={"color"}
@@ -123,10 +176,10 @@ const FillButton = ({ node }: { node: TNode }) => {
           )
         }
       />
-      <FillIcon />
+      {text ? <TextColorIcon /> : <FillIcon />}
       <div
         style={{ backgroundColor: node.props.fill }}
-        className={"h-[8px] w-[20px] rounded-sm border-[1px]"}
+        className={"h-[8px] w-[20px] rounded-md border-[1px]"}
       ></div>
     </div>
   );
@@ -154,21 +207,35 @@ const OpacityButton = ({ node }: { node: TNode }) => {
   );
 };
 
-const LayerButton = ({onChangeLayerPosition }: { onChangeLayerPosition: any }) => {
-
-
+const LayerButton = ({
+  onChangeLayerPosition,
+}: {
+  onChangeLayerPosition: any;
+}) => {
   const content = () => (
     <div className="w-[200px]  px-2   text-sm">
-      <Popover.Item onClick={()=>onChangeLayerPosition(2)} className="flex flex-row gap-3 hover:bg-gray-100 items-center cursor-pointer">
+      <Popover.Item
+        onClick={() => onChangeLayerPosition(2)}
+        className="flex flex-row gap-3 hover:bg-gray-100 items-center cursor-pointer"
+      >
         <LayerTopIcon className="text-lg" /> <span>Bring to front</span>
       </Popover.Item>
-      <Popover.Item onClick={()=>onChangeLayerPosition(1)} className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+      <Popover.Item
+        onClick={() => onChangeLayerPosition(1)}
+        className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer"
+      >
         <LayerTopSingleIcon className="text-lg" /> <span>Bring forward</span>
       </Popover.Item>
-      <Popover.Item onClick={()=>onChangeLayerPosition(-1)} className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+      <Popover.Item
+        onClick={() => onChangeLayerPosition(-1)}
+        className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer"
+      >
         <LayerBackSingleIcon className="text-lg" /> <span>Bring backward</span>
       </Popover.Item>
-      <Popover.Item onClick={()=>onChangeLayerPosition(-2)} className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer">
+      <Popover.Item
+        onClick={() => onChangeLayerPosition(-2)}
+        className="flex flex-row gap-3 hover:bg-gray-100 items-center  cursor-pointer"
+      >
         <LayerBackIcon className="text-lg" /> <span>Bring to back</span>
       </Popover.Item>
     </div>

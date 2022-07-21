@@ -14,6 +14,7 @@ import {
 import SideContent from "./Parts/SideContent";
 import Shapes from "./Parts/SideContent/Shapes";
 import { PersistGate } from "redux-persist/integration/react";
+import Texts from "./Parts/SideContent/Texts";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -22,8 +23,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App />}>
-              <Route index element={<Navigate to={"shapes"} />} />
+              <Route index element={<Navigate to={"texts"} />} />
               <Route path="shapes" element={<Shapes />} />
+              <Route path="texts" element={<Texts />} />
               <Route path="*" element={<SideContent />} />
             </Route>
           </Routes>

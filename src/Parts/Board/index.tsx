@@ -37,7 +37,6 @@ const Board = ({ stageRef }: BoardProps) => {
   const {nodes, nodeActif:actif,undo} = useAppSelector(SelectBoard);
 
   const { onClick, onMouseOver, onMouseLeave,onChange } = useNodeEvent();
-console.log(nodes.map((n)=>n.map((t)=>t.props)));
 
   return (
     <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden">
@@ -72,6 +71,7 @@ console.log(nodes.map((n)=>n.map((t)=>t.props)));
               
              return <ShapeItem key={i} props={props} isSelected={actif == i} node={node} index={i} onChange={onChange}/>
             })}
+         
           </Layer>
         </Stage>
       </div>

@@ -6,6 +6,7 @@ import {
   Rect,
   RegularPolygon,
   Star,
+  Text,
   Transformer,
 } from "react-konva";
 import { TNode } from "../../state/slices/boardSlice";
@@ -78,12 +79,14 @@ const ShapeItem = ({
 
   return (
     <>
+      {node.type == "text" && <Text {...shapeProps} />}
       {(node.type == "rect" ||node.type == "layer") && <Rect {...shapeProps} />}
       {node.type == "arc" && <Arc {...shapeProps} />}
       {node.type == "star" && <Star {...shapeProps} />}
       {node.type == "ellipse" && <Ellipse {...shapeProps} />}
       {node.type == "regularPolygon" && <RegularPolygon {...shapeProps} />}
       {node.type == "circle" && <Circle {...shapeProps} />}
+ 
       {isSelected && index != 0 && (
         <Transformer
           ref={trRef}
