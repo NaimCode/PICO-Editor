@@ -38,7 +38,7 @@ const CustomSide = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-1">
+    <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-1 gap-1">
       <button
         style={{
           cursor: undo <= 0 ? "not-allowed" : "pointer",
@@ -108,7 +108,7 @@ const EditNode = ({ node }: { node: TNode }) => {
           <FillButton text node={node} />
           <OpacityButton node={node} />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
-          <TextButton />
+          <TextButton node={node}/>
         </>
       );
     default:
@@ -121,17 +121,22 @@ const EditNode = ({ node }: { node: TNode }) => {
   }
 };
 
-const TextButton = () => {
-  
+const TextButton = ({ node }: { node: TNode }) => {
+  const dispatch=useAppDispatch()
+  const handleTextStyleChange=(property:'textDecoration'|'fontVariant'|'fontStyle',value:string|undefined)=>{
+    const obj:any={}
+    obj[property]=value
+    dispatch(BoardAction.updateNodeProps({value:{...obj}}))
+  }
   return (
     <>
-      <button className="iconButton text-lg">
+      <button onClick={()=>handleTextStyleChange('fontVariant',node.props.fontVariant=="bold"?undefined:"bold")} style={{ backgroundColor: node.props.fontVariant=="bold" ? "rgb(229 231 235 / 0.6)" : "" }} className="iconButton text-lg">
         <BoldIcon />
       </button>
-      <button className="iconButton text-lg">
+      <button  onClick={()=>handleTextStyleChange('fontStyle',node.props.fontStyle=="italic"?undefined:"italic")}  style={{ backgroundColor: node.props.fontStyle=="italic" ? "rgb(229 231 235 / 0.6)" : "" }} className="iconButton text-lg">
         <ItalicIcon />
       </button>
-      <button className="iconButton text-lg">
+      <button  onClick={()=>handleTextStyleChange('textDecoration',node.props.textDecoration=="underline"?undefined:"underline")}  style={{ backgroundColor: node.props.textDecoration=="underline" ? "rgb(229 231 235 / 0.6)" : "" }} className="iconButton text-lg">
         <UnderlineIcon />
       </button>
     </>

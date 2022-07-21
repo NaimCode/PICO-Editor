@@ -46,6 +46,7 @@ const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
+
     UndoRedo: (state: TBoard, action: PayloadAction<"undo" | "redo">) => {
       if (action.payload == "undo") {
         console.log("undo");
