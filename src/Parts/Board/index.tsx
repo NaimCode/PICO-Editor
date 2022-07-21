@@ -37,7 +37,7 @@ const Board = ({ stageRef }: BoardProps) => {
   const {nodes, nodeActif:actif,undo} = useAppSelector(SelectBoard);
 
   const { onClick, onMouseOver, onMouseLeave,onChange } = useNodeEvent();
-console.log(nodes);
+console.log(nodes.map((n)=>n.map((t)=>t.props)));
 
   return (
     <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden">

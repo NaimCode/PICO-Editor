@@ -42,7 +42,7 @@ const NavBar = ({ stageRef }: NavBarProps) => {
   const handleNewProject = () => {
     dispatch(BoardAction.NewProject());
   };
-//handleNewProject()
+handleNewProject()
   return (
     <div className="min-h-[70px] max-h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
       <div className="flex flex-row items-center">

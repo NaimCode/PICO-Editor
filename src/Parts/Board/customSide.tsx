@@ -29,8 +29,7 @@ const CustomSide = () => {
   const {nodeActif:actif,nodes,undo} = useAppSelector(SelectBoard);
   const node = useAppSelector(SelectBoardNodes)[actif!];
   const dispatch = useAppDispatch();
-  console.log(undo, nodes.length);
-  
+
   return (
     <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-1">
       <button style={{cursor:undo<=0?'not-allowed':'pointer', opacity:undo<=0?.5:1}} onClick={()=>dispatch(BoardAction.UndoRedo("undo"))} className="transition-all text-lg rounded-md  text-black  w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center">
@@ -54,10 +53,10 @@ const CustomSide = () => {
                 dispatch(BoardAction.LockShape())
               }}/>
               <DuplicateButton   onDuplice={()=>{
-                dispatch(BoardAction.DuplicateShape())
+                dispatch(BoardAction.DuplicateShape({}))
               }}/>
               <DeleteButton onDelete={()=>{
-                dispatch(BoardAction.DeleteShape())
+                dispatch(BoardAction.DeleteShape({}))
               }}/>
             </>
           )}
