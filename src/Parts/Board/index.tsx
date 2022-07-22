@@ -36,18 +36,19 @@ type BoardProps = {
 const Board = ({ stageRef }: BoardProps) => {
   const {nodes, nodeActif:actif,undo} = useAppSelector(SelectBoard);
 
+   const [dimension,setdimension]=useState<{width:number,height:number}>()
   const { onClick, onMouseOver, onMouseLeave,onChange } = useNodeEvent();
 
   return (
     <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden">
       <CustomSide />
       <div className="overflow-scroll  flex-grow flex flex-col items-center justify-center p-5">
-        <Stage
+       <Stage
           
-          width={nodes[undo][0].props.width}
-          height={nodes[undo][0].props.height}
+          width={nodes[undo][0].props.width} height={nodes[undo][0].props.height}
         >
-          <Layer ref={stageRef}>
+        
+          <Layer  ref={stageRef}>
             {nodes[undo].map((node, i) =>{
              
                 const strokeEnabled =

@@ -100,13 +100,13 @@ const ShapeItem = ({
         <Transformer
           ref={trRef}
        
-          keepRatio={true}
+          keepRatio={node.type == "image"|| node.type == "text" ?true:false}
           //anchorFill="#00a1ff"
           borderStroke="#00a1ff"
           borderStrokeWidth={2}
           resizeEnabled={!node.lock}
           rotateEnabled={!node.lock}
-         centeredScaling
+          centeredScaling
           
           anchorCornerRadius={2}
           flipEnabled={true}
