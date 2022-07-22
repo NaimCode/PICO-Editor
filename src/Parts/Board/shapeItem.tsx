@@ -101,7 +101,9 @@ const ShapeItem = ({
           {...shapeProps}
         />
       )}
-      {node.type == "image" && <ImageShape props={shapeProps} />}
+      {node.type == "image" && (
+        <ImageShape index={index} onChange={onChange} props={shapeProps} />
+      )}
       {(node.type == "rect" || node.type == "layer") && (
         <Rect {...shapeProps} />
       )}
@@ -120,16 +122,22 @@ const ShapeItem = ({
           borderStrokeWidth={2}
           resizeEnabled={!node.lock}
           rotateEnabled={!node.lock}
-          boundBoxFunc={ node.type=="text"?function (oldBox: Box, newBox: Box) {
-            newBox.width = Math.max(50, newBox.width);
-            //  newBox.height=Math.max(10,newBox.height)
-            return newBox;
-          }:node.type=="image"? function (oldBox:Box, newBox:Box) {
-            if (newBox.width < 10 || newBox.height < 10) {
-              return oldBox;
-            }
-            return newBox;
-          }:undefined}
+          boundBoxFunc={
+            node.type == "text"
+              ? function (oldBox: Box, newBox: Box) {
+                  newBox.width = Math.max(50, newBox.width);
+                  //  newBox.height=Math.max(10,newBox.height)
+                  return newBox;
+                }
+              : node.type == "image"
+              ? function (oldBox: Box, newBox: Box) {
+                  if (newBox.width < 10 || newBox.height < 10) {
+                    return oldBox;
+                  }
+                  return newBox;
+                }
+              : undefined
+          }
           anchorCornerRadius={2}
           flipEnabled={true}
           useSingleNodeRotation={true}
@@ -167,21 +175,51 @@ const ShapeItem = ({
 
 export default ShapeItem;
 
-const ImageShape = ({ props }: { props: any }) => {
+const ImageShape = ({
+  props,
+  onChange,
+  index,
+}: {
+  props: any;
+  onChange: any;
+  index: number;
+}) => {
   const [imgSrc] = useImage(props.src);
 
-  return imgSrc ? (
-    <Image lineCap="square" lineJoin="bevel" onTransform={()=>{
-      const img=props.ref.current
-      img.setAttrs({
-        scaleX: 1,
-        scaleY: 1,
-        width: img.width() * img.scaleX(),
-        height: img.height() * img.scaleY(),
-      });
-      applyCrop(img,img.getAttr('lastCropUsed'));
+  useEffect(() => {
+    if (imgSrc) {
+      const img = props.ref.current;
+      applyCrop(img, img.getAttr("lastCropUsed"));
+    }
+  }, [imgSrc]);
 
-    }} image={imgSrc} {...props} />
+  return imgSrc ? (
+    <Image
+      lineCap="square"
+      lineJoin="bevel"
+      onTransform={() => {
+        const img = props.ref.current;
+        const scaleX = 1;
+        const scaleY = 1;
+        const width = img.width() * img.scaleX();
+        const height = img.height() * img.scaleY();
+        img.setAttrs({
+          scaleX,
+          scaleY,
+          width,
+          height,
+        });
+        applyCrop(img, img.getAttr("lastCropUsed"));
+        onChange(index, {
+          scaleX,
+          scaleY,
+          width,
+          height,
+        });
+      }}
+      image={imgSrc}
+      {...props}
+    />
   ) : (
     <Rect />
   );
@@ -289,22 +327,17 @@ const onEditText = ({
   });
 };
 
-
-
-function applyCrop(img:any,pos:any) {
-
-  img.setAttr('lastCropUsed', pos);
+function applyCrop(img: any, pos: any) {
+  img.setAttr("lastCropUsed", pos);
   const crop = getCrop(
     img.image(),
     { width: img.width(), height: img.height() },
     pos
   );
   img.setAttrs(crop);
-  
 }
 
-
-function getCrop(image:any, size:any, clipPosition = 'center-middle') {
+function getCrop(image: any, size: any, clipPosition = "center-middle") {
   const width = size.width;
   const height = size.height;
   const aspectRatio = width / height;
@@ -324,41 +357,41 @@ function getCrop(image:any, size:any, clipPosition = 'center-middle') {
 
   let x = 0;
   let y = 0;
-  if (clipPosition === 'left-top') {
+  if (clipPosition === "left-top") {
     x = 0;
     y = 0;
-  } else if (clipPosition === 'left-middle') {
+  } else if (clipPosition === "left-middle") {
     x = 0;
     y = (image.height - newHeight) / 2;
-  } else if (clipPosition === 'left-bottom') {
+  } else if (clipPosition === "left-bottom") {
     x = 0;
     y = image.height - newHeight;
-  } else if (clipPosition === 'center-top') {
+  } else if (clipPosition === "center-top") {
     x = (image.width - newWidth) / 2;
     y = 0;
-  } else if (clipPosition === 'center-middle') {
+  } else if (clipPosition === "center-middle") {
     x = (image.width - newWidth) / 2;
     y = (image.height - newHeight) / 2;
-  } else if (clipPosition === 'center-bottom') {
+  } else if (clipPosition === "center-bottom") {
     x = (image.width - newWidth) / 2;
     y = image.height - newHeight;
-  } else if (clipPosition === 'right-top') {
+  } else if (clipPosition === "right-top") {
     x = image.width - newWidth;
     y = 0;
-  } else if (clipPosition === 'right-middle') {
+  } else if (clipPosition === "right-middle") {
     x = image.width - newWidth;
     y = (image.height - newHeight) / 2;
-  } else if (clipPosition === 'right-bottom') {
+  } else if (clipPosition === "right-bottom") {
     x = image.width - newWidth;
     y = image.height - newHeight;
-  } else if (clipPosition === 'scale') {
+  } else if (clipPosition === "scale") {
     x = 0;
     y = 0;
     newWidth = width;
     newHeight = height;
   } else {
     console.error(
-      new Error('Unknown clip position property - ' + clipPosition)
+      new Error("Unknown clip position property - " + clipPosition)
     );
   }
 
