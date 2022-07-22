@@ -214,7 +214,6 @@ const ChangeImage = ({ node }: { node: TNode }) => {
       let reader = new FileReader();
 
       reader.onload = (e) => {
-        console.log(node.props.width, node.props.height);
         dispatch(
           BoardAction.updateNodeProps({
             value: {
