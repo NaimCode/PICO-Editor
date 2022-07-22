@@ -79,9 +79,9 @@ const ShapeItem = ({
 
   return (
     <>
-      {node.type == "text" && <Text {...shapeProps} />}
+      {node.type == "text" && <Text  {...shapeProps} />}
       {(node.type == "rect" ||node.type == "layer") && <Rect {...shapeProps} />}
-      {node.type == "arc" && <Arc {...shapeProps} />}
+      {node.type == "arc" && <Arc  {...shapeProps} />}
       {node.type == "star" && <Star {...shapeProps} />}
       {node.type == "ellipse" && <Ellipse {...shapeProps} />}
       {node.type == "regularPolygon" && <RegularPolygon {...shapeProps} />}
@@ -101,13 +101,13 @@ const ShapeItem = ({
           anchorCornerRadius={2}
           flipEnabled={true}
           useSingleNodeRotation={true}
-          // enabledAnchors={[
-          //   "top-left",
-          //   "center-left",
-          //   "top-right",
-          //   "bottom-left",
-          //   "bottom-right",
-          // ]}
+        
+          enabledAnchors={node.type == "text"?[
+            "top-left", 
+            "top-right",
+            "bottom-left",
+            "bottom-right",
+          ]:undefined}
         />
       )}
     </>

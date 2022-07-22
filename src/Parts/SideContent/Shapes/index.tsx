@@ -21,6 +21,9 @@ const Shapes = () => {
   const dispatch=useAppDispatch()
   return (
     <SideContent>
+      <div className="overflow-y-scroll flex flex-col">
+
+    
       <div className="w-full min-h-[50px] py-3 px-3 bg-white rounded-lg flex flex-row gap-2 items-center overflow-y-scroll">
         <SearchIcon className="text-lg" />
         <input
@@ -45,6 +48,7 @@ const Shapes = () => {
             </Stage>
           );
         })}
+      </div>
       </div>
     </SideContent>
   );

@@ -10,7 +10,7 @@ import NavBar from "./navBar";
 const App: FunctionComponent = () => {
   const stageRef=useRef()
   return (
-      <main className="h-screen flex flex-col">
+      <main className="h-screen flex flex-col  overflow-hidden">
         {/* NavBar */}
         <NavBar stageRef={stageRef}/>
         {/* Content */}
