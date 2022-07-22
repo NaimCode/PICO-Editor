@@ -29,7 +29,6 @@ import {
   BsArrow90DegRight as RedoIcon,
 } from "react-icons/bs";
 import {
-  
   HiOutlineDuplicate as DuplicateIcon,
   HiOutlineLockClosed as LockIcon,
 } from "react-icons/hi";
@@ -71,13 +70,14 @@ const CustomSide = () => {
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
           <StrokeColorButton node={node} />
           <StrokeButton node={node} />
-         {actif!=0 && <>
-          <ShadowButton node={node} />
-         </>}
+          {actif != 0 && (
+            <>
+              <ShadowButton node={node} />
+            </>
+          )}
           <div className="flex-grow"></div>
           {actif != 0 && (
             <>
-           
               <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
               <LayerButton
                 onChangeLayerPosition={(position: 1 | 2 | -1 | 2) => {
@@ -120,7 +120,7 @@ const EditNode = ({ node }: { node: TNode }) => {
           <FillButton text node={node} />
           <OpacityButton node={node} />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
-      
+
           <TextButton node={node} />
         </>
       );
@@ -192,9 +192,8 @@ const TextButton = ({ node }: { node: TNode }) => {
         className="iconButton text-lg"
       >
         <UnderlineIcon />
-     
       </button>
-      <TextLineButton node={node}/>
+      <TextLineButton node={node} />
     </>
   );
 };
@@ -277,7 +276,6 @@ const StrokeButton = ({ node }: { node: TNode }) => {
     <div className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3">
       <span className="text-[12px] text-black/80">Border size</span>
       <Slider
-     
         initialValue={node.props.strokeWidth ? node.props.strokeWidth * 3 : 0}
         onChange={(e) => {
           dispath(
@@ -298,7 +296,7 @@ const OpacityButton = ({ node }: { node: TNode }) => {
 
   const content = () => (
     <div className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3">
-         <span className="text-[12px] text-black/80">Opacity</span>
+      <span className="text-[12px] text-black/80">Opacity</span>
       <Slider
         initialValue={node.props.opacity ? node.props.opacity * 100 : 100}
         onChange={(e) => {
@@ -320,24 +318,46 @@ const ShadowButton = ({ node }: { node: TNode }) => {
   const dispath = useAppDispatch();
 
   const content = () => (
-    <div style={{ padding: "0 10px" }} className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3">
-          <span className="text-[12px] text-black/80">Shadow</span>
+    <div
+      style={{ padding: "0 10px" }}
+      className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3"
+    >
+      <span className="text-[12px] text-black/80">Shadow blur</span>
       <Slider
-        initialValue={node.props.shadowOffset ? node.props.shadowOffset * 2 : 0}
+        initialValue={node.props.shadowBlur ? node.props.shadowBlur : 0}
         onChange={(e) => {
-          dispath(
-            BoardAction.updateNodeProps({value:{shadowBlur:e ,shadowOffset: e / 2,}})
-          );
+          dispath(BoardAction.updateNodeProps({ value: { shadowBlur: e } }));
         }}
+      />
+      <Divider />
+      <span className="text-[12px] text-black/80">Offset Y</span>
+      <Slider
+        min={-50}
+        max={50}
+        initialValue={
+          node.props.shadowOffsetY ? node.props.shadowOffsetY * 2 : 0
+        }
+        onChange={(e) => {
+          dispath(BoardAction.updateNodeProps({ value: { shadowOffsetY: e } }));
+        }}
+      />
+      <Divider />
+      <span className="text-[12px] text-black/80">Offset X</span>
+      <Slider
+        initialValue={
+          node.props.shadowOffsetX ? node.props.shadowOffsetX * 2 : 0
+        }
+        min={-50}
+        max={50}
+        onChange={(e) =>
+          dispath(BoardAction.updateNodeProps({ value: { shadowOffsetX: e } }))
+        }
       />
     </div>
   );
   return (
-    <Popover
-      content={content}
-      className="iconButton "
-    >
-     <ShadowIcon/>
+    <Popover content={content} className="iconButton ">
+      <ShadowIcon />
     </Popover>
   );
 };
@@ -346,36 +366,34 @@ const TextLineButton = ({ node }: { node: TNode }) => {
   const dispath = useAppDispatch();
 
   const content = () => (
-    <div style={{ padding: "0 10px" }} className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3">
-          <span className="text-[12px] text-black/80">Line height</span>
+    <div
+      style={{ padding: "0 10px" }}
+      className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3"
+    >
+      <span className="text-[12px] text-black/80">Line height</span>
       <Slider
         initialValue={node.props.lineHeight ? node.props.lineHeight * 4 : 0}
         onChange={(e) => {
           dispath(
-            BoardAction.updateNodeProps({value:{lineHeight: e / 4,}})
+            BoardAction.updateNodeProps({ value: { lineHeight: e / 4 } })
           );
         }}
       />
-      <Divider/>
+      <Divider />
       <span className="text-[12px] text-black/80">Letter spacing</span>
       <Slider
-      min={-50}
-      max={50}
-        initialValue={node.props.letterSpacing ? node.props.letterSpacing  : 0}
+        min={-50}
+        max={50}
+        initialValue={node.props.letterSpacing ? node.props.letterSpacing : 0}
         onChange={(e) => {
-          dispath(
-            BoardAction.updateNodeProps({value:{letterSpacing: e,}})
-          );
+          dispath(BoardAction.updateNodeProps({ value: { letterSpacing: e } }));
         }}
       />
     </div>
   );
   return (
-    <Popover
-      content={content}
-      className="iconButton "
-    >
-     <TextLineIcon/>
+    <Popover content={content} className="iconButton ">
+      <TextLineIcon />
     </Popover>
   );
 };

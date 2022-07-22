@@ -3,12 +3,14 @@ import {
   Arc,
   Circle,
   Ellipse,
+  Image,
   Rect,
   RegularPolygon,
   Star,
   Text,
   Transformer,
 } from "react-konva";
+import useImage from "use-image";
 import { TNode } from "../../state/slices/boardSlice";
 
 // const props = {
@@ -80,6 +82,7 @@ const ShapeItem = ({
   return (
     <>
       {node.type == "text" && <Text  {...shapeProps} />}
+      {node.type == "image" && <ImageShape  props={shapeProps} />}
       {(node.type == "rect" ||node.type == "layer") && <Rect {...shapeProps} />}
       {node.type == "arc" && <Arc  {...shapeProps} />}
       {node.type == "star" && <Star {...shapeProps} />}
@@ -97,13 +100,15 @@ const ShapeItem = ({
           borderStrokeWidth={2}
           resizeEnabled={!node.lock}
           rotateEnabled={!node.lock}
-          centeredScaling
+         centeredScaling
+          
           anchorCornerRadius={2}
           flipEnabled={true}
           useSingleNodeRotation={true}
-        
-          enabledAnchors={node.type == "text"?[
-            "top-left", 
+         
+          enabledAnchors={node.type == "text" ||node.type =="image"?[
+            "top-left",
+           
             "top-right",
             "bottom-left",
             "bottom-right",
@@ -115,3 +120,10 @@ const ShapeItem = ({
 };
 
 export default ShapeItem;
+
+
+const ImageShape=({props}:{props:any})=>{
+  const [img] = useImage(props.src);
+
+  return img ? <Image image={img} {...props}/> :<Rect/>
+}
