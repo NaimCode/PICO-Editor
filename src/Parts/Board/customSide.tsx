@@ -113,7 +113,11 @@ export default CustomSide;
 const EditNode = ({ node }: { node: TNode }) => {
   switch (node.type) {
     case "image":
-      return <div>empty</div>;
+      return (
+        <>
+          <ChangeImage node={node} />
+        </>
+      );
     case "text":
       return (
         <>
@@ -132,6 +136,38 @@ const EditNode = ({ node }: { node: TNode }) => {
         </>
       );
   }
+};
+
+const ChangeImage = ({ node }: { node: TNode }) => {
+  const onFileChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+   
+      let reader = new FileReader();
+
+      reader.onload = (e) => {
+        console.log(node.props.width,node.props.height);
+        dispatch(BoardAction.updateNodeProps({ value: { src:e.target?.result,scaleX:node.props.scaleX,scaleY:node.props.scaleY } }));
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  };
+  const dispatch=useAppDispatch()
+  return (
+    <button className="relative overflow-hidden transition-all text-[12px] font-light rounded-md cursor-pointer text-black/80 h-[35px]  hover:bg-gray-200/60 flex flex-row gap-1 items-center justify-center p-1">
+      <img
+        src={node.props.src}
+        alt=""
+        className="w-[35px] h-full object-cover px-1 rounded-sm overflow-hidden"
+      />
+      Replace
+      <input
+        onChange={onFileChange}
+        type={"file"}
+        accept="image/*"
+        className="absolute top-0 left-0 h-full opacity-0 cursor-pointer"
+      />
+    </button>
+  );
 };
 
 const TextButton = ({ node }: { node: TNode }) => {

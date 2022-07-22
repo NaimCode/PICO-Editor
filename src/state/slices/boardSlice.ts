@@ -46,7 +46,6 @@ const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
-
     UndoRedo: (state: TBoard, action: PayloadAction<"undo" | "redo">) => {
       if (action.payload == "undo") {
         console.log("undo");
@@ -66,11 +65,11 @@ const boardSlice = createSlice({
       RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
         nodes.push(action.payload);
       }),
-    DeleteShape: (state: TBoard, action:any) =>
-    RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
-      nodes.splice(state.nodeActif!, 1);
-      state.nodeActif = undefined;
-    }),
+    DeleteShape: (state: TBoard, action: any) =>
+      RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
+        nodes.splice(state.nodeActif!, 1);
+        state.nodeActif = undefined;
+      }),
     LockShape: (state: TBoard) => {
       state.nodes[state.undo][state.nodeActif!].lock =
         !state.nodes[state.undo][state.nodeActif!].lock;
@@ -94,26 +93,24 @@ const boardSlice = createSlice({
           nodes.splice(state.nodeActif! - 1, 0, tempNode);
           state.nodeActif!--;
         }
-        if (action.payload == -2) {    
+        if (action.payload == -2) {
           nodes.splice(state.nodeActif!, 1);
-          nodes.splice(1, 0,node);
+          nodes.splice(1, 0, node);
           state.nodeActif = 1;
-         
-          
         }
       }),
-    DuplicateShape: (state: TBoard,action:any)=>
-    RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
-      const node = nodes[state.nodeActif!];
-      nodes.push({
-        type: node.type,
-        props: {
-          ...node.props,
-          x: node.props.x || 0 + 20,
-          y: node.props.y || 0 + 20,
-        },
-      });
-    }),
+    DuplicateShape: (state: TBoard, action: any) =>
+      RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
+        const node = nodes[state.nodeActif!];
+        nodes.push({
+          type: node.type,
+          props: {
+            ...node.props,
+            x: (node.props.x || 0) + 20,
+            y:( node.props.y || 0 )+ 20,
+          },
+        });
+      }),
     SelectNode: (state: TBoard, action: PayloadAction<number>) => {
       state.nodeActif = action.payload;
     },
@@ -121,16 +118,16 @@ const boardSlice = createSlice({
       state: TBoard,
       action: PayloadAction<{ index?: number; value: any }>
     ) =>
-    RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
-      const { index, value } = action.payload;
-      if (index)
-        nodes[index].props = { ...nodes[index].props, ...value };
-      else
-        nodes[state.nodeActif!].props = {
-          ...nodes[state.nodeActif!].props,
-          ...value,
-        };
-    }),
+      RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
+        const { index, value } = action.payload;
+        if (index) nodes[index].props = { ...nodes[index].props, ...value };
+        else
+          nodes[state.nodeActif!].props = {
+            ...nodes[state.nodeActif!].props,
+            ...value,
+          };
+          if (action.payload.value.src) state.nodeActif = undefined;
+      }),
 
     updateNode: (
       state: TBoard,
@@ -142,7 +139,7 @@ const boardSlice = createSlice({
     ) => {
       const { index, value, property } = action.payload;
       if (index) state.nodes[state.undo][index].props[property] = value;
-      else  state.nodes[state.undo][state.nodeActif!].props[property] = value;
+      else state.nodes[state.undo][state.nodeActif!].props[property] = value;
     },
   },
 });
@@ -152,14 +149,16 @@ const RedoUndoFeatures = (
   action: PayloadAction<any>,
   funct: Function
 ) => {
+
   state.nodes = state.nodes.filter((n, i) => i <= state.undo);
-  let nodes =JSON.parse(JSON.stringify(state.nodes[state.undo]));
-//
+  let nodes = JSON.parse(JSON.stringify(state.nodes[state.undo]));
+  //
   funct(nodes);
   //
   if (state.nodes.length >= 10) state.nodes.splice(0, 1);
   state.nodes.push(nodes);
   state.undo = state.nodes.length - 1;
+
 };
 
 export const BoardAction = boardSlice.actions;

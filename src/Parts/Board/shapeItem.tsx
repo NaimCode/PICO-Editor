@@ -67,9 +67,15 @@ const ShapeItem = ({
       const rotation = node.rotation();
       const skewX = node.skewX();
       const skewY = node.skewY();
+      const width=node.width()
+      const height=node.height()
+
       onChange(index, {
         x,
         y,
+        width,
+        height,
+        
         scaleX,
         scaleY,
         skewX,
@@ -106,9 +112,10 @@ const ShapeItem = ({
           flipEnabled={true}
           useSingleNodeRotation={true}
          
-          enabledAnchors={node.type == "text" ||node.type =="image"?[
-            "top-left",
-           
+          enabledAnchors={node.type == "text"
+          // ||node.type =="image"
+          ?[
+            "top-left",     
             "top-right",
             "bottom-left",
             "bottom-right",
@@ -125,5 +132,5 @@ export default ShapeItem;
 const ImageShape=({props}:{props:any})=>{
   const [img] = useImage(props.src);
 
-  return img ? <Image image={img} {...props}/> :<Rect/>
+  return img ? <Image lineCap="square" lineJoin="bevel"   image={img} {...props}/> :<Rect/>
 }
