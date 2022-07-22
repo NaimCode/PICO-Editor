@@ -8,10 +8,14 @@ import {
   TNode,
 } from "../../state/slices/boardSlice";
 import {
+  CgFormatLineHeight as TextLineIcon,
   CgColorBucket as FillIcon,
   CgDropOpacity as OpacityIcon,
 } from "react-icons/cg";
 import {
+  BsIntersect as ShadowIcon,
+  BsBorderWidth as StrokeIcon,
+  BsBorderOuter as StrokeColorIcon,
   BsTypeBold as BoldIcon,
   BsTypeItalic as ItalicIcon,
   BsTypeUnderline as UnderlineIcon,
@@ -25,11 +29,12 @@ import {
   BsArrow90DegRight as RedoIcon,
 } from "react-icons/bs";
 import {
+  
   HiOutlineDuplicate as DuplicateIcon,
   HiOutlineLockClosed as LockIcon,
 } from "react-icons/hi";
 import { AiOutlineDelete as DeleteIcon } from "react-icons/ai";
-import { Popover, Slider, Spacer, Tooltip } from "@geist-ui/core";
+import { Divider, Popover, Slider, Spacer, Tooltip } from "@geist-ui/core";
 import { Link } from "react-router-dom";
 
 const CustomSide = () => {
@@ -63,9 +68,16 @@ const CustomSide = () => {
       {node && (
         <>
           <EditNode node={node} />
+          <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+          <StrokeColorButton node={node} />
+          <StrokeButton node={node} />
+         {actif!=0 && <>
+          <ShadowButton node={node} />
+         </>}
           <div className="flex-grow"></div>
           {actif != 0 && (
             <>
+           
               <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
               <LayerButton
                 onChangeLayerPosition={(position: 1 | 2 | -1 | 2) => {
@@ -108,7 +120,8 @@ const EditNode = ({ node }: { node: TNode }) => {
           <FillButton text node={node} />
           <OpacityButton node={node} />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
-          <TextButton node={node}/>
+      
+          <TextButton node={node} />
         </>
       );
     default:
@@ -122,23 +135,66 @@ const EditNode = ({ node }: { node: TNode }) => {
 };
 
 const TextButton = ({ node }: { node: TNode }) => {
-  const dispatch=useAppDispatch()
-  const handleTextStyleChange=(property:'textDecoration'|'fontVariant'|'fontStyle',value:string|undefined)=>{
-    const obj:any={}
-    obj[property]=value
-    dispatch(BoardAction.updateNodeProps({value:{...obj}}))
-  }
+  const dispatch = useAppDispatch();
+  const handleTextStyleChange = (
+    property: "textDecoration" | "fontVariant" | "fontStyle",
+    value: string | undefined
+  ) => {
+    const obj: any = {};
+    obj[property] = value;
+    dispatch(BoardAction.updateNodeProps({ value: { ...obj } }));
+  };
   return (
     <>
-      <button onClick={()=>handleTextStyleChange('fontVariant',node.props.fontVariant=="bold"?undefined:"bold")} style={{ backgroundColor: node.props.fontVariant=="bold" ? "rgb(229 231 235 / 0.6)" : "" }} className="iconButton text-lg">
+      <button
+        onClick={() =>
+          handleTextStyleChange(
+            "fontVariant",
+            node.props.fontVariant == "bold" ? undefined : "bold"
+          )
+        }
+        style={{
+          backgroundColor:
+            node.props.fontVariant == "bold" ? "rgb(229 231 235 / 0.6)" : "",
+        }}
+        className="iconButton text-lg"
+      >
         <BoldIcon />
       </button>
-      <button  onClick={()=>handleTextStyleChange('fontStyle',node.props.fontStyle=="italic"?undefined:"italic")}  style={{ backgroundColor: node.props.fontStyle=="italic" ? "rgb(229 231 235 / 0.6)" : "" }} className="iconButton text-lg">
+      <button
+        onClick={() =>
+          handleTextStyleChange(
+            "fontStyle",
+            node.props.fontStyle == "italic" ? undefined : "italic"
+          )
+        }
+        style={{
+          backgroundColor:
+            node.props.fontStyle == "italic" ? "rgb(229 231 235 / 0.6)" : "",
+        }}
+        className="iconButton text-lg"
+      >
         <ItalicIcon />
       </button>
-      <button  onClick={()=>handleTextStyleChange('textDecoration',node.props.textDecoration=="underline"?undefined:"underline")}  style={{ backgroundColor: node.props.textDecoration=="underline" ? "rgb(229 231 235 / 0.6)" : "" }} className="iconButton text-lg">
+      <button
+        onClick={() =>
+          handleTextStyleChange(
+            "textDecoration",
+            node.props.textDecoration == "underline" ? undefined : "underline"
+          )
+        }
+        style={{
+          backgroundColor:
+            node.props.textDecoration == "underline"
+              ? "rgb(229 231 235 / 0.6)"
+              : "",
+        }}
+        className="iconButton text-lg"
+      >
         <UnderlineIcon />
+     
       </button>
+      <TextLineButton node={node}/>
     </>
   );
 };
@@ -189,12 +245,60 @@ const FillButton = ({ node, text }: { node: TNode; text?: boolean }) => {
     </div>
   );
 };
+const StrokeColorButton = ({ node }: { node: TNode }) => {
+  const dispath = useAppDispatch();
 
+  return (
+    <div className="gap-[3px] text-sm relative  flex flex-col items-center justify-center transition-all rounded-md cursor-pointer text-black  w-[35px] h-[35px]  hover:bg-gray-200/60  ">
+      <input
+        className="cursor-pointer rounded-md border-none bg-transparent opacity-0 w-[40px] h-[40px] absolute top-0 left-0"
+        type={"color"}
+        onChange={(e) =>
+          dispath(
+            BoardAction.updateNode({
+              property: "stroke",
+              value: e.target.value,
+            })
+          )
+        }
+      />
+      <StrokeColorIcon />
+      <div
+        style={{ backgroundColor: node.props.stroke }}
+        className={"h-[8px] w-[20px] rounded-md border-[1px]"}
+      ></div>
+    </div>
+  );
+};
+const StrokeButton = ({ node }: { node: TNode }) => {
+  const dispath = useAppDispatch();
+
+  const content = () => (
+    <div className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3">
+      <span className="text-[12px] text-black/80">Border size</span>
+      <Slider
+     
+        initialValue={node.props.strokeWidth ? node.props.strokeWidth * 3 : 0}
+        onChange={(e) => {
+          dispath(
+            BoardAction.updateNode({ property: "strokeWidth", value: e / 3 })
+          );
+        }}
+      />
+    </div>
+  );
+  return (
+    <Popover content={content} className="iconButton text-lg">
+      <StrokeIcon />
+    </Popover>
+  );
+};
 const OpacityButton = ({ node }: { node: TNode }) => {
   const dispath = useAppDispatch();
 
   const content = () => (
-    <div style={{ padding: "0 10px" }} className="w-[200px] px-5">
+    <div className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3">
+         <span className="text-[12px] text-black/80">Opacity</span>
       <Slider
         initialValue={node.props.opacity ? node.props.opacity * 100 : 100}
         onChange={(e) => {
@@ -208,6 +312,70 @@ const OpacityButton = ({ node }: { node: TNode }) => {
   return (
     <Popover content={content} className="iconButton text-lg">
       <OpacityIcon />
+    </Popover>
+  );
+};
+
+const ShadowButton = ({ node }: { node: TNode }) => {
+  const dispath = useAppDispatch();
+
+  const content = () => (
+    <div style={{ padding: "0 10px" }} className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3">
+          <span className="text-[12px] text-black/80">Shadow</span>
+      <Slider
+        initialValue={node.props.shadowOffset ? node.props.shadowOffset * 2 : 0}
+        onChange={(e) => {
+          dispath(
+            BoardAction.updateNodeProps({value:{shadowBlur:e ,shadowOffset: e / 2,}})
+          );
+        }}
+      />
+    </div>
+  );
+  return (
+    <Popover
+      content={content}
+      className="iconButton "
+    >
+     <ShadowIcon/>
+    </Popover>
+  );
+};
+
+const TextLineButton = ({ node }: { node: TNode }) => {
+  const dispath = useAppDispatch();
+
+  const content = () => (
+    <div style={{ padding: "0 10px" }} className="w-[230px] px-5 -translate-y-1 flex flex-col gap-3">
+          <span className="text-[12px] text-black/80">Line height</span>
+      <Slider
+        initialValue={node.props.lineHeight ? node.props.lineHeight * 4 : 0}
+        onChange={(e) => {
+          dispath(
+            BoardAction.updateNodeProps({value:{lineHeight: e / 4,}})
+          );
+        }}
+      />
+      <Divider/>
+      <span className="text-[12px] text-black/80">Letter spacing</span>
+      <Slider
+      min={-50}
+      max={50}
+        initialValue={node.props.letterSpacing ? node.props.letterSpacing  : 0}
+        onChange={(e) => {
+          dispath(
+            BoardAction.updateNodeProps({value:{letterSpacing: e,}})
+          );
+        }}
+      />
+    </div>
+  );
+  return (
+    <Popover
+      content={content}
+      className="iconButton "
+    >
+     <TextLineIcon/>
     </Popover>
   );
 };
