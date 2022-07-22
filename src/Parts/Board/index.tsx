@@ -44,11 +44,11 @@ const Board = ({ stageRef }: BoardProps) => {
       <CustomSide />
       <div className="overflow-scroll  flex-grow flex flex-col items-center justify-center p-5">
        <Stage
-          
+          ref={stageRef}
           width={nodes[undo][0].props.width} height={nodes[undo][0].props.height}
         >
         
-          <Layer  ref={stageRef}>
+          <Layer>
             {nodes[undo].map((node, i) =>{
              
                 const strokeEnabled =
@@ -56,7 +56,7 @@ const Board = ({ stageRef }: BoardProps) => {
               const props = {
                 key: i,
                 ...node.props,
-                
+             
                 draggable:i!=0?!node.lock:false,
                 // stroke: "#00a1ff",
                 // strokeWidth: 2,
@@ -71,7 +71,7 @@ const Board = ({ stageRef }: BoardProps) => {
                  })
               };
               
-             return <ShapeItem key={i} props={props} isSelected={actif == i} node={node} index={i} onChange={onChange}/>
+             return <ShapeItem    stageRef={stageRef} key={i} props={props} isSelected={actif == i} node={node} index={i} onChange={onChange}/>
             })}
          
           </Layer>
