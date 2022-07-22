@@ -86,7 +86,7 @@ export default NavBar;
 
 const ProjectName: FunctionComponent = ({}) => {
   return (
-    <div className="flex flex-row gap-1 w-[350px] items-center px-4 group">
+    <div className="flex flex-row gap-1 w-[350px] items-center px-5 group">
       <input
         className="bg-transparent placeholder:text-white/30 text-white/80  flex-grow"
         placeholder="Your new project"

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   BoardAction,
@@ -13,6 +13,7 @@ import {
   CgDropOpacity as OpacityIcon,
 } from "react-icons/cg";
 import {
+  BsPlus as PlusIcon,
   BsIntersect as ShadowIcon,
   BsBorderWidth as StrokeIcon,
   BsBorderOuter as StrokeColorIcon,
@@ -67,6 +68,7 @@ const CustomSide = () => {
       {node && (
         <>
           <EditNode node={node} />
+
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
           <StrokeColorButton node={node} />
           <StrokeButton node={node} />
@@ -124,6 +126,8 @@ const EditNode = ({ node }: { node: TNode }) => {
           <FillButton text node={node} />
           <OpacityButton node={node} />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+          <ChangeFontSize node={node} />
+          <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
 
           <TextButton node={node} />
         </>
@@ -138,20 +142,93 @@ const EditNode = ({ node }: { node: TNode }) => {
   }
 };
 
+const ChangeFontSize = ({ node }: { node: TNode }) => {
+  const [value, setvalue] = useState(node.props.fontSize)
+  const dispatch = useAppDispatch();
+
+  return (
+    <div className="flex flex-row rounded-md border-[1px] h-[30px] border-gray-200/60  items-center">
+      <button
+        onClick={() => {
+          let v = parseInt(value);
+          if (v && v!=0) {
+           
+            setvalue(v-1)
+            dispatch(
+              BoardAction.updateNodeProps({ value: { fontSize: v-1 } })
+            );
+          }
+        }}
+        className="hover:bg-gray-200/60 text-lg font-semibold w-[20px] border-r-[1px] border-gray-200/60"
+      >
+        -
+      </button>
+      <input
+        onChange={(e) => {
+      
+          // if (value) {
+
+          // }
+          const v=parseInt(e.target.value)
+          setvalue(e.target.value)
+          if(v)
+           {
+    
+                        dispatch(
+              BoardAction.updateNodeProps({ value: { fontSize: v } })
+            );
+           }
+           else {
+            if(e.target.value==""){
+          
+            }
+           }
+        }}
+        value={value}
+        type="text"
+        name=""
+        id=""
+        className="w-[35px] text-center text-sm font-sans"
+      />
+      <button
+        onClick={() => {
+         let v = parseInt(value);
+          if (v || value=="") {
+            v= (v|| 0) +1
+            setvalue(v)
+            dispatch(
+              BoardAction.updateNodeProps({ value: { fontSize: v } })
+            );
+          }
+        }}
+        className="hover:bg-gray-200/60 text-lg  w-[20px] border-l-[1px] border-gray-200/60"
+      >
+        +
+      </button>
+    </div>
+  );
+};
 const ChangeImage = ({ node }: { node: TNode }) => {
-  const onFileChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-   
       let reader = new FileReader();
 
       reader.onload = (e) => {
-        console.log(node.props.width,node.props.height);
-        dispatch(BoardAction.updateNodeProps({ value: { src:e.target?.result,scaleX:node.props.scaleX,scaleY:node.props.scaleY } }));
+        console.log(node.props.width, node.props.height);
+        dispatch(
+          BoardAction.updateNodeProps({
+            value: {
+              src: e.target?.result,
+              scaleX: node.props.scaleX,
+              scaleY: node.props.scaleY,
+            },
+          })
+        );
       };
       reader.readAsDataURL(event.target.files[0]);
     }
   };
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch();
   return (
     <button className="relative overflow-hidden transition-all text-[12px] font-light rounded-md cursor-pointer text-black/80 h-[35px]  hover:bg-gray-200/60 flex flex-row gap-1 items-center justify-center p-1">
       <img
@@ -408,10 +485,10 @@ const TextLineButton = ({ node }: { node: TNode }) => {
     >
       <span className="text-[12px] text-black/80">Line height</span>
       <Slider
-        initialValue={node.props.lineHeight ? node.props.lineHeight * 4 : 0}
+        initialValue={node.props.lineHeight ? node.props.lineHeight * 20 : 0}
         onChange={(e) => {
           dispath(
-            BoardAction.updateNodeProps({ value: { lineHeight: e / 4 } })
+            BoardAction.updateNodeProps({ value: { lineHeight: e / 20 } })
           );
         }}
       />

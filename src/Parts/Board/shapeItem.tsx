@@ -218,7 +218,7 @@ const onEditText = ({
   const rotation = textnode.rotation();
   let transform = "";
   if (rotation) {
-    transform += "rotationZ(" + rotation + "deg)";
+    transform += "rotateZ(" + rotation + "deg)";
   }
   let px = 0;
   const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
