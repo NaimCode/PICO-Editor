@@ -34,7 +34,14 @@ import {
   HiOutlineLockClosed as LockIcon,
 } from "react-icons/hi";
 import { AiOutlineDelete as DeleteIcon } from "react-icons/ai";
-import { Divider, Popover, Select, Slider, Spacer, Tooltip } from "@geist-ui/core";
+import {
+  Divider,
+  Popover,
+  Select,
+  Slider,
+  Spacer,
+  Tooltip,
+} from "@geist-ui/core";
 import { Link } from "react-router-dom";
 import { Fonts } from "../../Data/fonts";
 
@@ -44,14 +51,14 @@ const CustomSide = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-1 gap-1">
+    <div className="h-[50px] min-h-[50px] w-full bg-white drop-shadow-sm flex flex-row items-center px-1 gap-1 overflow-x-scroll">
       <button
         style={{
           cursor: undo <= 0 ? "not-allowed" : "pointer",
           opacity: undo <= 0 ? 0.5 : 1,
         }}
         onClick={() => dispatch(BoardAction.UndoRedo("undo"))}
-        className="transition-all text-lg rounded-md  text-black  w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center"
+        className="transition-all text-lg rounded-md  text-black  min-w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center"
       >
         <UndoIcon />
       </button>
@@ -61,7 +68,7 @@ const CustomSide = () => {
           opacity: undo < nodes.length - 1 ? 1 : 0.5,
         }}
         onClick={() => dispatch(BoardAction.UndoRedo("redo"))}
-        className="transition-all text-lg rounded-md  text-black  w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center"
+        className="transition-all text-lg rounded-md  text-black  min-w-[35px] h-[35px]  hover:bg-gray-200/60 flex items-center justify-center"
       >
         <RedoIcon />
       </button>
@@ -127,7 +134,7 @@ const EditNode = ({ node }: { node: TNode }) => {
           <FillButton text node={node} />
           <OpacityButton node={node} />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
-          <FontsButton node={node}/>
+          <FontsButton node={node} />
           <ChangeFontSize node={node} />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
 
@@ -145,7 +152,7 @@ const EditNode = ({ node }: { node: TNode }) => {
 };
 
 const ChangeFontSize = ({ node }: { node: TNode }) => {
-  const [value, setvalue] = useState(node.props.fontSize)
+  const [value, setvalue] = useState(node.props.fontSize);
   const dispatch = useAppDispatch();
 
   return (
@@ -153,11 +160,10 @@ const ChangeFontSize = ({ node }: { node: TNode }) => {
       <button
         onClick={() => {
           let v = parseInt(value);
-          if (v && v!=0) {
-           
-            setvalue(v-1)
+          if (v && v != 0) {
+            setvalue(v - 1);
             dispatch(
-              BoardAction.updateNodeProps({ value: { fontSize: v-1 } })
+              BoardAction.updateNodeProps({ value: { fontSize: v - 1 } })
             );
           }
         }}
@@ -167,24 +173,17 @@ const ChangeFontSize = ({ node }: { node: TNode }) => {
       </button>
       <input
         onChange={(e) => {
-      
           // if (value) {
 
           // }
-          const v=parseInt(e.target.value)
-          setvalue(e.target.value)
-          if(v)
-           {
-    
-                        dispatch(
-              BoardAction.updateNodeProps({ value: { fontSize: v } })
-            );
-           }
-           else {
-            if(e.target.value==""){
-          
+          const v = parseInt(e.target.value);
+          setvalue(e.target.value);
+          if (v) {
+            dispatch(BoardAction.updateNodeProps({ value: { fontSize: v } }));
+          } else {
+            if (e.target.value == "") {
             }
-           }
+          }
         }}
         value={value}
         type="text"
@@ -194,13 +193,11 @@ const ChangeFontSize = ({ node }: { node: TNode }) => {
       />
       <button
         onClick={() => {
-         let v = parseInt(value);
-          if (v || value=="") {
-            v= (v|| 0) +1
-            setvalue(v)
-            dispatch(
-              BoardAction.updateNodeProps({ value: { fontSize: v } })
-            );
+          let v = parseInt(value);
+          if (v || value == "") {
+            v = (v || 0) + 1;
+            setvalue(v);
+            dispatch(BoardAction.updateNodeProps({ value: { fontSize: v } }));
           }
         }}
         className="hover:bg-gray-200/60 text-lg  w-[20px] border-l-[1px] border-gray-200/60"
@@ -312,19 +309,31 @@ const TextButton = ({ node }: { node: TNode }) => {
   );
 };
 
-const FontsButton=({ node }: { node: TNode })=>{
-  const dispatch=useAppDispatch()
+const FontsButton = ({ node }: { node: TNode }) => {
+  const dispatch = useAppDispatch();
   console.log(node.props.fontFamily);
-  
-  return (<Select onChange={(e)=>{
-    dispatch(BoardAction.updateNodeProps({value:{fontFamily:e}}))
-  }}  width={"20px"} disableMatchWidth initialValue={node.props.fontFamily|| "Roboto, sans-serif"} pure className="border-[1px] border-gray-200/60 h-[30px] text-ellipsis px-1">
 
-  {Fonts.map((f,i)=>{
-    return   <Select.Option key={i} style={{fontFamily:f}} value={f}>{f.split(",")[0]}</Select.Option>
-  })}
-</Select>)
-}
+  return (
+    <Select
+      onChange={(e) => {
+        dispatch(BoardAction.updateNodeProps({ value: { fontFamily: e } }));
+      }}
+      width={"100px"}
+      disableMatchWidth
+      initialValue={node.props.fontFamily || "Roboto, sans-serif"}
+      pure
+      className="border-[1px] border-gray-200/60 h-[30px] text-ellipsis px-1"
+    >
+      {Fonts.map((f, i) => {
+        return (
+          <Select.Option key={i} style={{ fontFamily: f }} value={f}>
+            {f.split(",")[0]}
+          </Select.Option>
+        );
+      })}
+    </Select>
+  );
+};
 const DuplicateButton = ({ onDuplice }: { onDuplice: any }) => {
   return (
     <button onClick={onDuplice} className="iconButton text-lg">
