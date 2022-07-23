@@ -60,13 +60,20 @@ const ShapeItem = ({
     ...props,
 
     ref: shapeRef,
-
+     fontFamily:props.fontFamily||"Roboto, sans-serif",
     onTransformEnd: (e: any) => {
       if (node.type == "text") {
+        onChange(index, {
+          width: shapeRef.current.width(),
+          height: shapeRef.current.height(),
+
+          scaleX: 1,
+          scaleY: 1,
+        });
       } else {
         const node = shapeRef.current;
-        const scaleX = node.scaleX();
-        const scaleY = node.scaleY();
+        const scaleX = node.type == "image" ? 1 : node.scaleX();
+        const scaleY = node.type == "image" ? 1 : node.scaleY();
         const x = node.x();
         const y = node.y();
         const rotation = node.rotation();
@@ -101,9 +108,7 @@ const ShapeItem = ({
           {...shapeProps}
         />
       )}
-      {node.type == "image" && (
-        <ImageShape index={index} onChange={onChange} props={shapeProps} />
-      )}
+      {node.type == "image" && <ImageShape props={shapeProps} />}
       {(node.type == "rect" || node.type == "layer") && (
         <Rect {...shapeProps} />
       )}
@@ -119,6 +124,7 @@ const ShapeItem = ({
           // keepRatio={node.type == "image"|| node.type == "text" ?true:false}
           //anchorFill="#00a1ff"
           borderStroke="#00a1ff"
+          
           borderStrokeWidth={2}
           resizeEnabled={!node.lock}
           rotateEnabled={!node.lock}
@@ -144,19 +150,27 @@ const ShapeItem = ({
           onTransform={() => {
             if (node.type == "text") {
               const node = shapeRef.current;
-              const scaleX = node.scaleX();
-              const scaleY = node.scaleY();
-
-              const width = node.width();
-              const height = node.height();
-
-              onChange(index, {
-                width: width * scaleX,
-                height: height * scaleY,
-
+              node.setAttrs({
+                width: node.width() * node.scaleX(),
+                height: node.height() * node.scaleY(),
                 scaleX: 1,
                 scaleY: 1,
               });
+
+              // const node = shapeRef.current;
+              // const scaleX = node.scaleX();
+              // const scaleY = node.scaleY();
+
+              // const width = node.width();
+              // const height = node.height();
+
+              // onChange(index, {
+              //   width: width * scaleX,
+              //   height: height * scaleY,
+
+              //   scaleX: 1,
+              //   scaleY: 1,
+              // });
             }
           }}
           // enabledAnchors={node.type == "text"
@@ -175,15 +189,7 @@ const ShapeItem = ({
 
 export default ShapeItem;
 
-const ImageShape = ({
-  props,
-  onChange,
-  index,
-}: {
-  props: any;
-  onChange: any;
-  index: number;
-}) => {
+const ImageShape = ({ props }: { props: any }) => {
   const [imgSrc] = useImage(props.src);
 
   useEffect(() => {
@@ -191,7 +197,7 @@ const ImageShape = ({
       const img = props.ref.current;
       applyCrop(img, img.getAttr("lastCropUsed"));
     }
-  }, [imgSrc]);
+  }, [imgSrc, props]);
 
   return imgSrc ? (
     <Image
@@ -210,12 +216,6 @@ const ImageShape = ({
           height,
         });
         applyCrop(img, img.getAttr("lastCropUsed"));
-        onChange(index, {
-          scaleX,
-          scaleY,
-          width,
-          height,
-        });
       }}
       image={imgSrc}
       {...props}

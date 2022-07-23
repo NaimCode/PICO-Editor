@@ -34,8 +34,9 @@ import {
   HiOutlineLockClosed as LockIcon,
 } from "react-icons/hi";
 import { AiOutlineDelete as DeleteIcon } from "react-icons/ai";
-import { Divider, Popover, Slider, Spacer, Tooltip } from "@geist-ui/core";
+import { Divider, Popover, Select, Slider, Spacer, Tooltip } from "@geist-ui/core";
 import { Link } from "react-router-dom";
+import { Fonts } from "../../Data/fonts";
 
 const CustomSide = () => {
   const { nodeActif: actif, nodes, undo } = useAppSelector(SelectBoard);
@@ -126,6 +127,7 @@ const EditNode = ({ node }: { node: TNode }) => {
           <FillButton text node={node} />
           <OpacityButton node={node} />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+          <FontsButton node={node}/>
           <ChangeFontSize node={node} />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
 
@@ -309,6 +311,20 @@ const TextButton = ({ node }: { node: TNode }) => {
     </>
   );
 };
+
+const FontsButton=({ node }: { node: TNode })=>{
+  const dispatch=useAppDispatch()
+  console.log(node.props.fontFamily);
+  
+  return (<Select onChange={(e)=>{
+    dispatch(BoardAction.updateNodeProps({value:{fontFamily:e}}))
+  }}  width={"20px"} disableMatchWidth initialValue={node.props.fontFamily|| "Roboto, sans-serif"} pure className="border-[1px] border-gray-200/60 h-[30px] text-ellipsis px-1">
+
+  {Fonts.map((f,i)=>{
+    return   <Select.Option key={i} style={{fontFamily:f}} value={f}>{f.split(",")[0]}</Select.Option>
+  })}
+</Select>)
+}
 const DuplicateButton = ({ onDuplice }: { onDuplice: any }) => {
   return (
     <button onClick={onDuplice} className="iconButton text-lg">
