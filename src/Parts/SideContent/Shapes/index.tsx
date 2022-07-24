@@ -78,16 +78,7 @@ type TShape = {
 };
 export const ListShapes: Array<TShape> = [
 
-  {
-    type: "arc",
-    props: {
-      ...propShape,
-      ...centerShape,
-      angle: 360,
 
-    },
-    render: (e) => <Arc {...e} />,
-  },
   {
     type: "rect",
     props: { width: w, height: h, fill: "#bbc8cd", },
@@ -110,6 +101,16 @@ export const ListShapes: Array<TShape> = [
       numPoints:2,
     },
     render: (e) => <Star {...e} />,
+  },
+  {
+    type: "arc",
+    props: {
+      ...propShape,
+      ...centerShape,
+      angle: 360,
+
+    },
+    render: (e) => <Arc {...e} />,
   },
   {
     type: "regularPolygon",

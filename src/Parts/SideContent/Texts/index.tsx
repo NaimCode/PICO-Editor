@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import SideContent from "..";
 import { RiSearch2Line as SearchIcon } from "react-icons/ri";
 import { GrClose as CloseIcon } from "react-icons/gr";
@@ -20,6 +20,8 @@ import { BoardAction, TNodeType } from "../../../state/slices/boardSlice";
 import { useAppDispatch } from "../../../hooks";
 import { TextConfig } from "konva/lib/shapes/Text";
 import { Shape } from "konva/lib/Shape";
+import { Divider } from "@geist-ui/core";
+import { KEY_GIPHY } from "../../../config";
 
 // _partialText: string;
 // _partialTextX: number;
@@ -49,9 +51,33 @@ const Texts = () => {
     }
     dispatch(BoardAction.AddNode({type:"text",props:communProps}))
   }
+  const [search, setSearch] = useState<string>("");
+  //useState data array
+  const [data, setData] = useState<{ searching: boolean; gifs: any }>();
+  const state = {
+    searchLimit: 50,
+    searching: false,
+    searched: false,
+    gifs: [],
+    url: "https://api.giphy.com/v1/gifs/search?",
+    apiKey:KEY_GIPHY,
+  };
+  //useeffect get gifs from giphy
+  useEffect(() => {
+    fetchGifs(search);
+  }, [search]);
+
+  const fetchGifs = (search: string) => {
+    fetch(
+      `${state.url}api_key=${state.apiKey}&q=${search}&limit=${state.searchLimit}`
+    )
+      .then((res) => res.json())
+      .then((data) => setData({ gifs: data.data, searching: false }));
+  };
   return (
     <SideContent>
-      <span className="text-white text-sm font-semibold">Basic text</span>
+     <div className="overflow-y-srcoll">
+     <span className="text-white text-sm font-semibold">Basic text</span>
       <div className="flex flex-col gap-3 p-2">
         <button onClick={()=>handleAddText({  fontSize:30,text:"Add a header",fontVariant:"bold",width:200})} className="transition-all py-4 px-3 text-3xl font-semibold bg-[#1f2021] hover:bg-[#292929]/50  text-left text-white border-2 border-[#292929] rounded-lg">
           Add a header
@@ -63,191 +89,13 @@ const Texts = () => {
           Add a paragraph
         </button>
       </div>
-      {/* <div className="flex flex-col gap-2">
-        {[1,2,3].map((shape, i) => {
-          return (
-            <Stage
-            key={i}
-            // onClick={(e)=>{
-            //   dispatch(BoardAction.AddNode({type:shape.type,props:shape.props}))
-            // }}
-            
-              width={350}
-              height={40}
-              className="hover:scale-105 transition-all "
-            >
-              <Layer >
-                <Text text="Add Header"/>
-              </Layer>
-            </Stage>
-          );
-        })}
-      </div> */}
+     <Divider className="opacity-0"/>
+     <span className="text-white text-sm font-semibold">Special text</span>
+
+     </div>
     </SideContent>
   );
 };
 
 export default Texts;
 
-const propShape = {
-  width: 143,
-  height: 100,
-  fill: "#bbc8cd",
-};
-const centerShape = {
-  x: 143 / 2,
-  y: 100 / 2,
-};
-type TShape = {
-  type: TNodeType;
-  props: any;
-  render: FunctionComponent<any>;
-};
-const ListShapes: Array<TShape> = [
-  {
-    type: "rect",
-    props: { width: 100, height: 100, fill: "#bbc8cd", y: 50 / 2, x: 48 / 2 },
-    render: (e) => <Rect {...e} />,
-  },
-  {
-    type: "arc",
-    props: {
-      ...propShape,
-      ...centerShape,
-      angle: 360,
-      innerRadius: 50,
-      outerRadius: 30,
-    },
-    render: (e) => <Arc {...e} />,
-  },
-  {
-    type: "star",
-    props: {
-      ...propShape,
-      ...centerShape,
-      numPoints: 3,
-      innerRadius: 50,
-      outerRadius: 30,
-    },
-    render: (e) => <Star {...e} />,
-  },
-  {
-    type: "star",
-    props: {
-      ...propShape,
-      ...centerShape,
-      numPoints: 2,
-      innerRadius: 50,
-      outerRadius: 30,
-    },
-    render: (e) => <Star {...e} />,
-  },
-  {
-    type: "regularPolygon",
-    props: {
-      ...propShape,
-      ...centerShape,
-      sides: 7,
-      radius: 50,
-    },
-    render: (e) => <RegularPolygon {...e} />,
-  },
-  {
-    type: "arc",
-    props: {
-      ...propShape,
-      ...centerShape,
-      angle: 180,
-
-      innerRadius: 50,
-      outerRadius: 30,
-    },
-    render: (e) => <Arc {...e} />,
-  },
-  {
-    type: "circle",
-    props: {
-      ...propShape,
-      ...centerShape,
-      angle: 180,
-      innerRadius: 50,
-      outerRadius: 30,
-    },
-    render: (e) => <Circle {...e} />,
-  },
-  {
-    type: "star",
-    props: {
-      ...propShape,
-      ...centerShape,
-      numPoints: 10,
-      innerRadius: 50,
-      outerRadius: 30,
-    },
-    render: (e) => <Star {...e} />,
-  },
-  {
-    type: "regularPolygon",
-    props: {
-      ...propShape,
-      ...centerShape,
-      sides: 13,
-      radius: 50,
-    },
-    render: (e) => <RegularPolygon {...e} />,
-  },
-  {
-    type: "star",
-    props: {
-      ...propShape,
-      ...centerShape,
-      numPoints: 5,
-      innerRadius: 50,
-      outerRadius: 30,
-    },
-    render: (e) => <Star {...e} />,
-  },
-
-  {
-    type: "ellipse",
-    props: {
-      ...propShape,
-      ...centerShape,
-      radiusX: 60,
-      radiusY: 30,
-    },
-    render: (e) => <Ellipse {...e} />,
-  },
-  {
-    type: "regularPolygon",
-    props: {
-      ...propShape,
-      ...centerShape,
-      sides: 6,
-      radius: 50,
-    },
-    render: (e) => <RegularPolygon {...e} />,
-  },
-  {
-    type: "star",
-    props: {
-      ...propShape,
-      ...centerShape,
-      numPoints: 4,
-      innerRadius: 50,
-      outerRadius: 30,
-    },
-    render: (e) => <Star {...e} />,
-  },
-
-  {
-    type: "regularPolygon",
-    props: {
-      ...propShape,
-      ...centerShape,
-      sides: 12,
-      radius: 50,
-    },
-    render: (e) => <RegularPolygon {...e} />,
-  },
-];
