@@ -7,7 +7,7 @@ import { BoardAction } from "../../../state/slices/boardSlice"
 import { ReactNode } from "react"
 import { Layer, Stage } from "react-konva"
 import { ListShapes } from "../Shapes"
-const gf = new GiphyFetch('C8MOnqzxJ9mcZ0jUBAmY9TNSRNv5dv8e')
+import { gf } from "../../../config"
 
 const DefaultElements=()=>{
     const getRandom=Math.floor(Math.random() * (100 - 20) + 20)

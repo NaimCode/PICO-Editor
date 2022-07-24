@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../../../hooks";
 import { BoardAction } from "../../../../state/slices/boardSlice";
 import { RiSearch2Line as SearchIcon } from "react-icons/ri";
-const gf = new GiphyFetch("C8MOnqzxJ9mcZ0jUBAmY9TNSRNv5dv8e");
+import { gf, KEY_GIPHY } from "../../../../config";
 
 const Gifs = () => {
   //useState search
@@ -15,13 +15,12 @@ const Gifs = () => {
   //useState data array
   const [data, setData] = useState<{ searching: boolean; gifs: any }>();
   const state = {
-    searchTerm: "",
-    searchLimit: 30,
+    searchLimit: 50,
     searching: false,
     searched: false,
     gifs: [],
     url: "https://api.giphy.com/v1/gifs/search?",
-    apiKey: "1caQBCCly08w0vinpWmp1AK5ep8o6gsj",
+    apiKey:KEY_GIPHY,
   };
   //useeffect get gifs from giphy
   useEffect(() => {
