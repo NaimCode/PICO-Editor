@@ -4,19 +4,22 @@ import useImage from "use-image";
 import SideContent from "..";
 import { useAppDispatch } from '../../../hooks';
 import { BoardAction } from "../../../state/slices/boardSlice";
-import {CgLock as LockIcon} from 'react-icons/cg'
-const Uploads = () => {
+
+const Images = () => {
 
   return (
     <SideContent>
       <div className="flex flex-wrap gap-2 overflow-y-scroll">
-        <div className=" text-white flex gap-2 flex-col items-center justify-center px-5 py-10 w-full rounded-lg">
-            <LockIcon className="text-3xl " />
-         <p className="font-thin opacity-60">To upload your assets, please</p>
-         <p><button className="font-bold underline">Sign up</button> <span className="font-thin opacity-60"> or </span><button className="font-bold underline"> Log in</button></p>
-        </div>
         {[
-
+          "/1.jpg",
+          "/2.jpg",
+          "/3.jpg",
+          "/4.jpg",
+          "/5.jpg",
+          "/6.jpg",
+          "/7.jpg",
+          "/8.jpg",
+          "/9.jpg",
         ].map((n, i) => (
           <ImageShape key={i} src={n} />
         ))}
@@ -25,7 +28,7 @@ const Uploads = () => {
   );
 };
 
-export default Uploads;
+export default Images;
 
 const ImageShape = ({ src }: { src: string }) => {
   const [img, state] = useImage(src);

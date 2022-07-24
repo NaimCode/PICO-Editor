@@ -20,6 +20,7 @@ import Elements from "./Parts/SideContent/Elements";
 import DefaultElements from "./Parts/SideContent/Elements/default";
 import Emoji3D from './Parts/SideContent/Elements/3DIcons/index';
 import Gifs from "./Parts/SideContent/Elements/Gifs";
+import Images from "./Parts/SideContent/Images";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                 <Route path="3demojis" element={<Emoji3D/>}/>
                 <Route path="gifs" element={<Gifs/>}/>
               </Route>
+              <Route path="images" element={<Images />} />
               <Route path="texts" element={<Texts />} />
               <Route path="uploads" element={<Uploads />} />
               <Route path="*" element={<SideContent />} />
