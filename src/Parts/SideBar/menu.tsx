@@ -15,8 +15,8 @@ export const listMenu:Array<Menu>=[
         icon:(style)=><TemplateIcon className={style}/>
     },
     {
-        title:"Shapes",
-        route:"shapes",
+        title:"Elements",
+        route:"elements",
         icon:(style)=><ShapesIcon className={style}/>
     },
     {
