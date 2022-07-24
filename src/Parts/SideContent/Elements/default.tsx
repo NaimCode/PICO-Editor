@@ -15,7 +15,7 @@ const DefaultElements=()=>{
     return <div className="overflow-y-scroll overflow-x-hidden">
 
         <Section title="Shapes">
-        <div className="flex flex-row items-center overflow-x-scroll" >
+        <div className="flex flex-row items-center overflow-x-scroll gap-3" >
         {ListShapes.map((shape, i) => {
           return (
             <Stage
@@ -39,7 +39,7 @@ const DefaultElements=()=>{
         <Section title="3D Emojis" seeAll="3demojis" giphy={(offset: number) => gf.emoji({offset:getRandom,limit: 10 })} elements={[]}/>
         <Section title="Gifs" seeAll="gifs" giphy={(offset: number) => gf.trending({offset:getRandom,limit: 10 })}  elements={[]}/>
         {/* <Section title="Texts" seeAll="texts" giphy={(offset: number) => gf.animate("insert your text",{limit: 10 })} elements={[]}/> */}
-        <Section title="Socials Medias" elements={['facebook','snapchat','instagram','twitter','dropbox','linkedin','whatsapp','youtube',"spotify"].map((r)=>"/socialMedia/"+r+".png")}/>
+        <Section title="Social Media" elements={['facebook','snapchat','instagram','twitter','dropbox','linkedin','whatsapp','youtube',"spotify"].map((r)=>"/socialMedia/"+r+".png")}/>
         
 
     </div>
@@ -56,7 +56,7 @@ type SectionProps={
 }
 const Section=({title,seeAll,elements,giphy, children}:SectionProps)=>{
     const dispatch=useAppDispatch()
-    return <div className="flex flex-col gap-5   text-sm">
+    return <div className="flex flex-col gap-3   text-sm">
         <div className="flex flex-row justify-between items-center">
       <span className="text-white font-semibold ">{title}</span>
        {seeAll&&  <Link to={seeAll} className="text-white opacity-40 text-[12px] transition-all font-extralight hover:opacity-100">See all</Link>}
