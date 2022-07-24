@@ -56,36 +56,42 @@ const Shapes = () => {
 
 export default Shapes;
 
+const w=100
+const h=70
 const propShape = {
-  width: 143,
-  height: 100,
+  width: w,
+  height: h,
   fill: "#bbc8cd",
+  innerRadius: 38,
+  outerRadius: 20,
+  radius:34 ,
+  radiusX:40, radiusY:20
 };
 const centerShape = {
-  x: 143 / 2,
-  y: 100 / 2,
+  x: w / 2,
+  y: h/ 2,
 };
 type TShape = {
   type: TNodeType;
   props: any;
   render: FunctionComponent<any>;
 };
-const ListShapes: Array<TShape> = [
-  {
-    type: "rect",
-    props: { width: 100, height: 100, fill: "#bbc8cd", y: 50 / 2, x: 48 / 2 },
-    render: (e) => <Rect {...e} />,
-  },
+export const ListShapes: Array<TShape> = [
+
   {
     type: "arc",
     props: {
       ...propShape,
       ...centerShape,
       angle: 360,
-      innerRadius: 50,
-      outerRadius: 30,
+
     },
     render: (e) => <Arc {...e} />,
+  },
+  {
+    type: "rect",
+    props: { width: w, height: h, fill: "#bbc8cd", },
+    render: (e) => <Rect {...e} />,
   },
   {
     type: "star",
@@ -93,8 +99,6 @@ const ListShapes: Array<TShape> = [
       ...propShape,
       ...centerShape,
       numPoints:3,
-      innerRadius:50,
-      outerRadius:30
     },
     render: (e) => <Star {...e} />,
   },
@@ -104,8 +108,6 @@ const ListShapes: Array<TShape> = [
       ...propShape,
       ...centerShape,
       numPoints:2,
-      innerRadius:50,
-      outerRadius:30
     },
     render: (e) => <Star {...e} />,
   },
@@ -114,7 +116,7 @@ const ListShapes: Array<TShape> = [
     props: {
       ...propShape,
       ...centerShape,
-      sides:7 ,radius:50 
+      sides:7 
     },
     render: (e) => <RegularPolygon {...e} />,
   },
@@ -124,9 +126,6 @@ const ListShapes: Array<TShape> = [
       ...propShape,
       ...centerShape,
       angle: 180,
-      
-      innerRadius: 50,
-      outerRadius: 30,
     },
     render: (e) => <Arc {...e} />,
   },
@@ -136,8 +135,6 @@ const ListShapes: Array<TShape> = [
       ...propShape,
       ...centerShape,
       angle: 180,
-      innerRadius: 50,
-      outerRadius: 30,
     },
     render: (e) => <Circle {...e} />,
   },
@@ -147,8 +144,6 @@ const ListShapes: Array<TShape> = [
       ...propShape,
       ...centerShape,
       numPoints:10,
-      innerRadius:50,
-      outerRadius:30
     },
     render: (e) => <Star {...e} />,
   },
@@ -157,7 +152,7 @@ const ListShapes: Array<TShape> = [
     props: {
       ...propShape,
       ...centerShape,
-      sides:13 ,radius:50 
+      sides:13 
     },
     render: (e) => <RegularPolygon {...e} />,
   },
@@ -167,8 +162,6 @@ const ListShapes: Array<TShape> = [
       ...propShape,
       ...centerShape,
       numPoints:5,
-      innerRadius:50,
-      outerRadius:30
     },
     render: (e) => <Star {...e} />,
   },
@@ -178,7 +171,7 @@ const ListShapes: Array<TShape> = [
     props: {
       ...propShape,
       ...centerShape,
-      radiusX:60, radiusY:30
+    
     },
     render: (e) => <Ellipse {...e} />,
   },
@@ -187,7 +180,7 @@ const ListShapes: Array<TShape> = [
     props: {
       ...propShape,
       ...centerShape,
-      sides:6 ,radius:50 
+      sides:6 
     },
     render: (e) => <RegularPolygon {...e} />,
   },
@@ -197,8 +190,6 @@ const ListShapes: Array<TShape> = [
       ...propShape,
       ...centerShape,
       numPoints:4,
-      innerRadius:50,
-      outerRadius:30
     },
     render: (e) => <Star {...e} />,
   },
@@ -208,7 +199,7 @@ const ListShapes: Array<TShape> = [
     props: {
       ...propShape,
       ...centerShape,
-      sides:12 ,radius:50 
+      sides:12 
     },
     render: (e) => <RegularPolygon {...e} />,
   },
