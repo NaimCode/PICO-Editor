@@ -26,7 +26,7 @@ const dataSlice = createSlice({
     AddTemplate: (state: TData, action: PayloadAction<Array<TNode>>) => {
       let type;
       switch (action.payload[0].props.width) {
-        case 620:
+        case 700:
           type = "Landscape";
           break;
         case 500:

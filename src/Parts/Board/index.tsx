@@ -9,6 +9,7 @@ import {
   Arc,
   Circle,
   Ellipse,
+  Group,
   Image,
   Layer,
   Rect,
@@ -40,18 +41,30 @@ const Board = ({ stageRef }: BoardProps) => {
 
    const [dimension,setdimension]=useState<{width:number,height:number}>()
   const { onClick, onMouseOver, onMouseLeave,onChange } = useNodeEvent();
-
+  let data = {
+    frameGroup: { x: 50, y: 100, width: 800, height: 300, strokeWidth: 10, stroke: 'cyan'},
+    fadeImage: {opacity: 0.3}
+  }
+  useEffect(() => {
+    if(stageRef.current){
+      const stage=document.getElementById('stage')
+      stage?.scrollIntoView(false)
+      
+    }
+  }, [])
   return (
     <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden relative">
       <SaveTemplate nodes={nodes[undo]}/>
       <CustomSide />
-      <div className="overflow-scroll  flex-grow flex flex-col items-center justify-center p-5">
-       <Stage
+      <div className="overflow-scroll  flex-grow">
+   <div className={`w-[1000px] transition-all h-[1000px] scale-${'150'} flex flex-col items-center justify-center`}>
+   <Stage id="stage"
           ref={stageRef}
           width={nodes[undo][0].props.width} height={nodes[undo][0].props.height}
         >
         
-          <Layer>
+          <Layer imageSmoothingEnabled>
+            
             {nodes[undo].map((node, i) =>{
              
                 const strokeEnabled =
@@ -79,6 +92,8 @@ const Board = ({ stageRef }: BoardProps) => {
          
           </Layer>
         </Stage>
+   </div>
+      
       </div>
     </div>
   );

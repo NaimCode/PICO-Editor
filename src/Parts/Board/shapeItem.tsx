@@ -60,6 +60,7 @@ const ShapeItem = ({
     ...props,
 
     ref: shapeRef,
+    
      fontFamily:props.fontFamily||"Roboto, sans-serif",
     onTransformEnd: (e: any) => {
       if (node.type == "text") {
@@ -96,6 +97,7 @@ const ShapeItem = ({
         });
       }
     },
+
   };
 
   return (

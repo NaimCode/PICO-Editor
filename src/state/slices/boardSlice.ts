@@ -86,7 +86,7 @@ const boardSlice = createSlice({
       let height;
       switch (action.payload) {
         case "Landscape":
-          width = 620;
+          width = 700;
           height = 360;
           //1,722222222
           break;

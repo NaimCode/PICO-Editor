@@ -51,6 +51,16 @@ const Templates = () => {
               })}
           </div>
         )}
+    
+    {filterType == "Portrait" && (
+          <div className="flex flex-wrap gap-5 justify-center">
+            {templates
+              .filter((t) => t.type == "Portrait")
+              .map((t) => {
+                return <TemplateItem template={t} w={140} />;
+              })}
+          </div>
+        )}
       </div>
     </SideContent>
   );
@@ -81,7 +91,7 @@ type TTemplateItem = {
 const TemplateItem = ({ template, w }: TTemplateItem) => {
   const size = (w: number, type: TProjectSize) => {
     const ratio = type == "Landscape" ? 1.722222 : type == "Portrait" ? 0.7 : 1;
-    const wType = type == "Landscape" ? 620 : type == "Portrait" ? 420 : 500;
+    const wType = type == "Landscape" ? 700 : type == "Portrait" ? 420 : 500;
     return { width: w, height: w / ratio, scale: w / wType };
   };
   const { width, height, scale } = size(w, template.type);

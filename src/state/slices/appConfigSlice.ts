@@ -4,10 +4,16 @@ import { RootState } from '../index';
 export type Language="fr"|"en"
 type AppConfig={
     language:Language,
+    boardScaling:{current:number,value:Array<number>}
 }
 const initialState:AppConfig={
-    language:"fr"
+    language:"fr",
+    boardScaling:{
+      current:4,
+      value:[50,75,90,95,100,105,110,125,150]
+    }
 }
+
 const appConfigSlice=createSlice({
     name:"appConfig",
     initialState,
@@ -16,11 +22,21 @@ const appConfigSlice=createSlice({
       changeLanguage:(state:AppConfig,action:PayloadAction<Language>)=>{
         state.language=action.payload
       },
+      ZoomIn:(state:AppConfig)=>{
+        if(state.boardScaling.current<state.boardScaling.value.length-1){
+          state.boardScaling.current+=1
+        }
+      },
+      ZoomOut:(state:AppConfig)=>{
+        if(state.boardScaling.current>0){
+          state.boardScaling.current-=1
+        }
+      }
     }
 })
 
 
 export const AppConfigAction = appConfigSlice.actions
 export const SelectAppConfig =(state:RootState)=>state.appConfig
-
+export const SelectAppConfigScaling =(state:RootState)=>state.appConfig.boardScaling.value[state.appConfig.boardScaling.current]
 export default appConfigSlice.reducer
