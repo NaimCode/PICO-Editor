@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RefObject } from "react";
 import { RootState } from "../index";
 
+export type TProjectSize = "Square" | "Landscape" | "Portrait";
 type TProperty = "fill" | "opacity";
 export type TNodeType =
   | "layer"
@@ -31,13 +32,25 @@ type TBoard = {
   undo: number;
   nodes: Array<Array<TNode>>;
 };
+
+function emptyProject({width,height}:{width:number,height:number}):Array<Array<TNode>>{
+  return  [
+    [
+      {
+        type: "rect",
+        props: { fill: "white",width,height },
+      },
+    ],
+  ]
+};
+
 const initialState: TBoard = {
   undo: 0,
   nodes: [
     [
       {
         type: "rect",
-        props: { fill: "white", width: 420, height: 600 },
+        props: { fill: "white" },
       },
     ],
   ],
@@ -46,6 +59,11 @@ const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
+    Init: (state: TBoard) => {
+      state.nodes = initialState.nodes;
+      state.nodeActif = undefined;
+      state.undo = 0;
+    },
     UndoRedo: (state: TBoard, action: PayloadAction<"undo" | "redo">) => {
       if (action.payload == "undo") {
         console.log("undo");
@@ -56,10 +74,32 @@ const boardSlice = createSlice({
         if (state.undo < state.nodes.length - 1) state.undo = state.undo + 1;
       }
     },
-    NewProject: (state: TBoard) => {
-      state.nodes = initialState.nodes;
+    NewProject: (state: TBoard, action: PayloadAction<TProjectSize>) => {
+
+      let width;
+      let height;
+      switch (action.payload) {
+        case "Landscape":
+          width = 620;
+          height = 360;
+          break;
+        case "Square":
+          width = 500;
+          height = 500;
+          break;
+        case "Portrait":
+          width = 420;
+          height = 600;
+          break;
+        default:
+          width = 420;
+          height = 600;
+          break;
+      }
+      state.nodes=emptyProject({width,height})
       state.nodeActif = undefined;
       state.undo = 0;
+
     },
     AddNode: (state: TBoard, action: PayloadAction<TNode>) =>
       RedoUndoFeatures(state, action, (nodes: Array<TNode>) => {
@@ -107,7 +147,7 @@ const boardSlice = createSlice({
           props: {
             ...node.props,
             x: (node.props.x || 0) + 20,
-            y:( node.props.y || 0 )+ 20,
+            y: (node.props.y || 0) + 20,
           },
         });
       }),
@@ -126,7 +166,7 @@ const boardSlice = createSlice({
             ...nodes[state.nodeActif!].props,
             ...value,
           };
-          if (action.payload.value.src) state.nodeActif = undefined;
+        if (action.payload.value.src) state.nodeActif = undefined;
       }),
 
     updateNode: (
@@ -149,7 +189,6 @@ const RedoUndoFeatures = (
   action: PayloadAction<any>,
   funct: Function
 ) => {
-
   state.nodes = state.nodes.filter((n, i) => i <= state.undo);
   let nodes = JSON.parse(JSON.stringify(state.nodes[state.undo]));
   //
@@ -158,7 +197,6 @@ const RedoUndoFeatures = (
   if (state.nodes.length >= 10) state.nodes.splice(0, 1);
   state.nodes.push(nodes);
   state.undo = state.nodes.length - 1;
-
 };
 
 export const BoardAction = boardSlice.actions;

@@ -39,10 +39,11 @@ const NavBar = ({ stageRef }: NavBarProps) => {
       downloadURI(uri, "stage.png");
     }
   };
-  const handleNewProject = () => {
-    dispatch(BoardAction.NewProject());
-  };
-handleNewProject()
+//   const handleNewProject = () => {
+//     dispatch(BoardAction.NewProject());
+//   };
+// handleNewProject()
+//dispatch(BoardAction.Init())
   return (
     <div className="min-h-[70px] max-h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
       <div className="flex flex-row items-center">
@@ -51,7 +52,9 @@ handleNewProject()
       </div>
       <div className="flex-grow flex flex-row gap-2 px-4 items-center">
         <IconButton
-          props={{ onClick:  handleNewProject  }}
+          props={{ 
+        onClick: ()=>dispatch(BoardAction.Init())
+          }}
           icon={<NewIcon />}
         />
         <div className="w-[1px] h-[15px] bg-gray-300/40 mx-1"></div>

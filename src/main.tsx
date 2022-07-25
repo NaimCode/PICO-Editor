@@ -25,7 +25,7 @@ import Images from "./Parts/SideContent/Images";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persitor}>
+      {/* <PersistGate loading={null} persistor={persitor} > */}
        
         <BrowserRouter>
           <Routes>
@@ -44,7 +44,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           </Routes>
         </BrowserRouter>
      
-      </PersistGate>
+      {/* </PersistGate> */}
     </Provider>
   </React.StrictMode>
 );

@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       colors: {
         sideContent: "#1c1e1f",
+        board: "#f4f4f5",
       },
     },
   },
