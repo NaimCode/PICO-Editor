@@ -90,8 +90,8 @@ type TTemplateItem = {
 
 const TemplateItem = ({ template, w }: TTemplateItem) => {
   const size = (w: number, type: TProjectSize) => {
-    const ratio = type == "Landscape" ? 1.722222 : type == "Portrait" ? 0.7 : 1;
-    const wType = type == "Landscape" ? 700 : type == "Portrait" ? 420 : 500;
+    const ratio = type == "Landscape" ? 2 : type == "Portrait" ? 0.7 : 1;
+    const wType = type == "Landscape" ? 800 : type == "Portrait" ? 420 : 520;
     return { width: w, height: w / ratio, scale: w / wType };
   };
   const { width, height, scale } = size(w, template.type);

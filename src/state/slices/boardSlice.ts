@@ -86,13 +86,13 @@ const boardSlice = createSlice({
       let height;
       switch (action.payload) {
         case "Landscape":
-          width = 700;
-          height = 360;
+          width = 800;
+          height = 400;
           //1,722222222
           break;
         case "Square":
-          width = 500;
-          height = 500;
+          width = 520;
+          height = 520;
           //1
           break;
         case "Portrait":

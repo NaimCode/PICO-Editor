@@ -9,8 +9,8 @@ type AppConfig={
 const initialState:AppConfig={
     language:"fr",
     boardScaling:{
-      current:4,
-      value:[50,75,90,95,100,105,110,125,150]
+      current:1,
+      value:[50,100,125,150]
     }
 }
 

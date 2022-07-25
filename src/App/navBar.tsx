@@ -13,7 +13,8 @@ import {
 import Button from "../Components/button";
 import IconButton from "../Components/iconButton";
 import Logo from "../Components/LogoBrand";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { AppConfigAction, SelectAppConfigScaling } from "../state/slices/appConfigSlice";
 import { BoardAction } from "../state/slices/boardSlice";
 import { DataAction } from "../state/slices/dataSlice";
 
@@ -31,7 +32,7 @@ type NavBarProps = {
 };
 const NavBar = ({ stageRef }: NavBarProps) => {
   const dispatch = useAppDispatch();
-
+const scale=useAppSelector(SelectAppConfigScaling)
   const handleExport = () => {
     if (stageRef.current) {
       const uri = stageRef.current.toDataURL({ pixelRatio: 1 });
@@ -44,34 +45,38 @@ const NavBar = ({ stageRef }: NavBarProps) => {
   //   };
   // handleNewProject()
   //dispatch(BoardAction.Init())
- //dispatch(DataAction.Fix())
+  //dispatch(DataAction.Fix())
   return (
     <div className="min-h-[70px] max-h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
       <div className="flex flex-row items-center">
         <Logo />
         <ProjectName />
       </div>
-      <div className="flex-grow flex flex-row gap-2 px-2 items-center">
+      <div className="flex-grow flex flex-row gap-3 px-2 items-center">
         {/* <IconButton
           props={{ 
         onClick: ()=>dispatch(BoardAction.Init())
           }}
           icon={<NewIcon />}
         /> */}
-        <button onClick={()=>dispatch(BoardAction.Init())} className="font-light text-sm flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white">
+                <div className="flex-grow"></div>
+        <button
+          onClick={() => dispatch(BoardAction.Init())}
+          className="font-light  flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white"
+        >
           <NewIcon />
           <span>New project</span>
         </button>
         <div className="w-[1px] h-[15px] bg-gray-300/40 mx-1"></div>
         {/* <IconButton icon={<SaveIcon />} /> */}
-        <button className="font-light text-sm flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white">
-        <SaveIcon />
+        <button className="font-light  flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white">
+          <SaveIcon />
           <span>Save</span>
         </button>
         <div className="w-[1px] h-[15px] bg-gray-300/40 mx-1"></div>
         {/* <IconButton icon={<ShareIcon />} /> */}
-        <button className="font-light text-sm flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white">
-        <ShareIcon/>
+        <button className="font-light  flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white">
+          <ShareIcon />
           <span>Share</span>
         </button>
         {/* <button  className="transition-all flex flex-row gap-2 opacity-80 items-center hover:opacity-100 border-[rgb(231,231,232)] text-[rgb(231,231,232)] border-[1px]  f py-2 px-2 rounded-md ">
@@ -82,14 +87,12 @@ const NavBar = ({ stageRef }: NavBarProps) => {
           <span className=" text-[13px]">New project</span></button> */}
         {/* <IconButton icon={ <UndoIcon/>}/>
         <IconButton icon={ <RedoIcon/>}/> */}
-        <div className="flex-grow"></div>
-        <IconButton icon={<ZoomOutIcon />} />
-        <span className="text-white/90 text-sm"> 100%</span>
-        <IconButton icon={<ZoomInIcon />} />
-        <div className="w-[20px]"></div>
+
+      
+      
         <button
           onClick={handleExport}
-          className="flex flex-row gap-2 items-center hover:bg-gray-300 bg-[#e7e7e8]  f py-2 px-4 rounded-md "
+          className="flex flex-row gap-2 items-center hover:bg-gray-300 bg-[#e7e7e8]  ml-5 py-2 px-4 rounded-md "
         >
           <ExportIcon className="text-xl text-black " />
           <span className="text-black/80 text-[14px]">Export</span>
