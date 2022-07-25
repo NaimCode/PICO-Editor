@@ -195,6 +195,7 @@ const ImageShape = ({ props }: { props: any }) => {
   useEffect(() => {
     if (imgSrc) {
       const img = props.ref.current;
+      
       applyCrop(img, img.getAttr("lastCropUsed"));
     }
   }, [imgSrc, props]);
@@ -203,6 +204,8 @@ const ImageShape = ({ props }: { props: any }) => {
     <Image
       lineCap="square"
       lineJoin="bevel"
+    
+
       onTransform={() => {
         const img = props.ref.current;
         const scaleX = 1;
