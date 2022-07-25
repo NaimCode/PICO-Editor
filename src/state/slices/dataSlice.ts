@@ -43,6 +43,9 @@ const dataSlice = createSlice({
     console.log('added');
     
     },
+    DeleteTemple:(state:TData,action:PayloadAction<number>)=>{
+        state.templates= [...state.templates.filter((t,i)=>i!=action.payload)]
+    }
   },
 });
 
