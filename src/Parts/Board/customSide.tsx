@@ -34,6 +34,7 @@ import {
   HiOutlineLockClosed as LockIcon,
 } from "react-icons/hi";
 import { AiOutlineDelete as DeleteIcon } from "react-icons/ai";
+import { BiImageAdd as AddImageIcon } from "react-icons/bi";
 import {
   Divider,
   Popover,
@@ -73,6 +74,13 @@ const CustomSide = () => {
         <RedoIcon />
       </button>
       <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+      {(!node || (node.type != "image" && node.type != "text")) && (
+        <>
+          <AddImageButton node={node} />
+          <div className="w-[1px] h-[25px] bg-gray-300 mx-1"></div>
+        </>
+      )}
+
       {node && (
         <>
           <EditNode node={node} />
@@ -149,6 +157,123 @@ const EditNode = ({ node }: { node: TNode }) => {
         </>
       );
   }
+};
+
+const AddImageButton = ({ node }: { node: TNode }) => {
+  const dispath = useAppDispatch();
+  const [img, setimg] = useState("");
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    var _URL = window.URL || window.webkitURL;
+
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      //Read the contents of Image File.
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = function (e) {
+        //Initiate the JavaScript Image object.
+        var image: any = new Image();
+
+        //Set the Base64 string return from FileReader as source.
+        image.src = e.target?.result;
+
+        //Validate the File Height and Width.
+        image.onload = function () {
+          var height: number;
+          var width: number;
+
+          if (this.height > 500 && this.width > 500) {
+            const x =
+              (this.width > this.height ? this.width : this.height) / 500;
+            height = this.height / x;
+            width = this.width / x;
+          } else {
+            height = this.height;
+            width = this.width;
+          }
+          dispatch(
+            BoardAction.AddNode({
+              type: "image",
+              props: {
+                src: e.target?.result,
+                width,
+                height,
+              },
+            })
+          );
+        };
+      };
+      // var imgt= new Image();
+      // var objectUrl = _URL.createObjectURL(event.target.files[0]);
+      // imgt.onload = function () {
+      //     alert(imgt.width + " " + imgt.height);
+      //     _URL.revokeObjectURL(objectUrl);
+      //     let reader = new FileReader();
+
+      // reader.onload = (e) => {
+
+      //   console.log(reader);
+      //   dispatch(
+      //     BoardAction.AddNode({type:"image",
+      //       props: {
+      //         src: e.target?.result,
+      //       },
+      //     })
+      //   );
+      // };
+      // reader.readAsDataURL(event.target.files[0]!);
+      // };
+    }
+  };
+  const dispatch = useAppDispatch();
+  const content = () => (
+    <div className="w-[300px] px-5 -translate-y-1 flex flex-col gap-3">
+      <span className="text-[12px] text-black/80">Add image</span>
+      <div className="flex flex-row gap-2">
+        <input
+          value={img}
+          onChange={(e) => {
+            setimg(e.target.value);
+          }}
+          placeholder="https://....."
+          name=""
+          id=""
+          className="flex-grow border-[1px] border-gray-300 px-2 py-1 rounded-md placeholder:text-sm font-light text-sm placeholder:font-light text-ellipsis"
+        />
+        <button
+          onClick={() => {
+            if (img != "") {
+              dispath(
+                BoardAction.AddNode({ type: "image", props: { src: img } })
+              );
+            }
+          }}
+          className={`${
+            img == "" ? "opacity-40 cursor-not-allowed" : "opacity-100"
+          } transition-all py-1 px-2 rounded-md bg-primary text-[12px] font-light text-white`}
+        >
+          add
+        </button>
+      </div>
+    </div>
+  );
+  return (
+    // <Popover
+    //   placement="bottomStart"
+    //   content={content}
+    //   className="iconButton text-lg"
+    // >
+    <button className="relative text-xl overflow-hidden transition-all iconButton">
+      <AddImageIcon />
+      <input
+        onChange={onFileChange}
+        type={"file"}
+        accept="image/*"
+        className="absolute top-0 left-0 h-full opacity-0 cursor-pointer"
+      />
+    </button>
+    // </Popover>
+  );
 };
 
 const ChangeFontSize = ({ node }: { node: TNode }) => {

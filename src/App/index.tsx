@@ -9,6 +9,7 @@ import NavBar from "./navBar";
 import { Helmet } from "react-helmet";
 import InitProject from "../Parts/InitProject";
 import { PAUSE } from "redux-persist/lib/constants";
+import { useToasts } from "@geist-ui/core";
 
 const App: FunctionComponent = () => {
   const stageRef = useRef();
@@ -29,6 +30,9 @@ const App: FunctionComponent = () => {
     favIcon = "/faviconDark.png";
     // Theme set to dark.
   }
+  const { setToast } = useToasts()
+  const notifier = () => setToast({ text: 'New project generated', delay: 2000 })
+  notifier()
   return (
     <main className="relative">
       <Helmet>

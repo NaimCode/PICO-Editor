@@ -125,13 +125,14 @@ const SaveTemplate = ({ nodes }: { nodes: Array<TNode> }) => {
   const dispatch = useAppDispatch();
   const role = useAppSelector(SelectUserRole);
 
+  
   if (role != "user") {
     return (
       <button
         onClick={() => {
           dispatch(DataAction.AddTemplate(nodes));
         }}
-        className="bg-primary z-30 absolute text-sm font-light text-white px-2 py-2 bottom-0 right-0 m-3 rounded-md drop-shadow-md"
+        className="bg-yellow-300 z-30 absolute text-sm font-light  px-2 py-2 bottom-0 right-0 m-3 rounded-md drop-shadow-md"
       >
         Save template
       </button>

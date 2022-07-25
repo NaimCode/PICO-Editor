@@ -8,6 +8,7 @@ import ShapeItemReadOnly from "./shapeItemReadOnly";
 import { HiOutlineDocumentAdd as AddIcon } from "react-icons/hi";
 import { SelectUserRole } from "../../../state/slices/userSlice";
 import {AiOutlineDelete as DeleteIcon} from 'react-icons/ai'
+import { Badge, useToasts } from "@geist-ui/core";
 const Templates = () => {
   const { templates } = useAppSelector(SelectData);
   const [filterType, setFilterType] = useState<TProjectSize>("Landscape");
@@ -15,13 +16,22 @@ const Templates = () => {
 
   return (
     <SideContent>
-      <div className="relative overflow-y-scroll flex flex-col gap-4">
+      <div className="relative overflow-y-scroll flex flex-col gap-4 ">
         <div className="z-20 sticky top-0 left-0 w-full px-1 py-3 backdrop-blur-2xl bg-sideContent/90 flex flex-row justify-between gap-3">
           {["Square", "Landscape", "Portrait"].map((item, i) => {
+            const t=item as TProjectSize
+            const lenght=templates.filter((tem,i)=>tem.type==t).length
             return (
+                <Badge.Anchor>
+                <Badge className="-translate-x-2 bg-yellow-400 text-black" scale={0.5}>
+                    {lenght>=100?"99+":lenght}
+                </Badge>
+              
+           
               <button
                 onClick={() => {
                   setFilterType(item as TProjectSize);
+                 
                 }}
                 className={`${
                   filterType == item && "bg-[#525757]"
@@ -30,6 +40,7 @@ const Templates = () => {
               >
                 {item}
               </button>
+              </Badge.Anchor>
             );
           })}
         </div>

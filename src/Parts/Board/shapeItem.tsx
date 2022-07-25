@@ -207,7 +207,7 @@ const ImageShape = ({ props }: { props: any }) => {
       lineCap="square"
       lineJoin="bevel"
     
-
+      crossOrigin="anonymous"
       onTransform={() => {
         const img = props.ref.current;
         const scaleX = 1;

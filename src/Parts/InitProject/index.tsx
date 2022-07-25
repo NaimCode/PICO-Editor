@@ -1,3 +1,4 @@
+import { useToasts } from "@geist-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -7,7 +8,7 @@ const InitProject = () => {
     const dispatch=useAppDispatch()
     const nodes=useAppSelector(SelectBoardNodes)
     const {props} =nodes[0]
-    
+
   return (
     <div className={`${props.width&&props.height&&"hidden"} absolute z-50 filter backdrop-blur-[10px] top-0 left-0 h-screen w-screen flex justify-center items-center`}>
       <div className="w-[70%] bg-white drop-shadow-2xl rounded-2xl p-10 flex flex-col gap-10">
@@ -24,6 +25,7 @@ const InitProject = () => {
                 <button
                 onClick={()=>{
                     dispatch(BoardAction.NewProject(name as TProjectSize))
+               
                 }}
                   style={{ width, height }}
 
