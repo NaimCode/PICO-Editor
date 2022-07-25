@@ -75,6 +75,11 @@ const boardSlice = createSlice({
         if (state.undo < state.nodes.length - 1) state.undo = state.undo + 1;
       }
     },
+    UseTemplate:(state:TBoard,action:PayloadAction<Array<TNode>>)=>{
+       state.nodes=[action.payload]
+       state.nodeActif = undefined;
+       state.undo = 0;
+    },
     NewProject: (state: TBoard, action: PayloadAction<TProjectSize>) => {
 
       let width;
@@ -83,14 +88,17 @@ const boardSlice = createSlice({
         case "Landscape":
           width = 620;
           height = 360;
+          //1,722222222
           break;
         case "Square":
           width = 500;
           height = 500;
+          //1
           break;
         case "Portrait":
           width = 420;
           height = 600;
+          //0,7
           break;
         default:
           width = 420;
