@@ -26,6 +26,8 @@ import {
   SelectBoardNodes,
   TNode,
 } from "../../state/slices/boardSlice";
+import { DataAction } from "../../state/slices/dataSlice";
+import { SelectUserRole } from '../../state/slices/userSlice';
 import CustomSide from "./customSide";
 import { useNodeEvent } from "./hooks";
 import ShapeItem from './shapeItem';
@@ -40,7 +42,8 @@ const Board = ({ stageRef }: BoardProps) => {
   const { onClick, onMouseOver, onMouseLeave,onChange } = useNodeEvent();
 
   return (
-    <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden">
+    <div className="bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden relative">
+      <SaveTemplate nodes={nodes[undo]}/>
       <CustomSide />
       <div className="overflow-scroll  flex-grow flex flex-col items-center justify-center p-5">
        <Stage
@@ -83,35 +86,19 @@ const Board = ({ stageRef }: BoardProps) => {
 
 export default Board;
 
-// type ShapeItemProps={
-//   node:TNode,i:number,actif:number,
-//   onClick:Function, onMouseOver:Function, onMouseLeave :Function,
-// }
-// const ShapeItem:FunctionComponent<ShapeItemProps>=({node,i,actif,onClick, onMouseOver, onMouseLeave}:ShapeItemProps)=>{
-//  const ref =useRef()
 
-// let Content
-// console.log(node.type);
+const SaveTemplate=({nodes}:{nodes:Array<TNode>})=>{
+  const dispatch=useAppDispatch()
+  const role=useAppSelector(SelectUserRole)
 
-//   switch (node.type) {
-//     case "rect":
-//       return <Rect {...props} />;
-//     case "arc":
-//       return <Arc {...props} />;
-//     case "star":
-//       return <Star {...props} />;
-//     case "regularPolygon":
-//       return <RegularPolygon {...props} />;
-//     case "circle":
-//       return <Circle {...props} />;
-//     case "ellipse":
-//       return <Ellipse {...props} />;
-//     case "text":
-//       return <Text {...props} />;
-//     case "image":
-//       return <Image {...props} />;
-
-//     default:
-//       return <Rect {...props} />;
-//     }
-// }
+if(role!='user')
+{
+  return <button onClick={()=>{
+    dispatch(DataAction.AddTemplate(nodes))
+  }} className="bg-primary absolute text-sm font-light text-white px-2 py-2 bottom-0 right-0 m-3 rounded-md drop-shadow-md">
+    Save template
+  </button>
+}
+else 
+return <div></div>
+}

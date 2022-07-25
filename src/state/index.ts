@@ -5,18 +5,20 @@ import boardSlice from "./slices/boardSlice";
 import userSlice from "./slices/userSlice";
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import storage from "redux-persist/es/storage";
+import dataSlice from "./slices/dataSlice";
 const persistConfig = {
-    key: 'ShoppyCard',
-    
+    key: 'PICO',
     storage,
   }
 
 const persistBoard=persistReducer(persistConfig,boardSlice) 
+const persistData=persistReducer(persistConfig,dataSlice)
 const store=configureStore({
     reducer:{
         user:userSlice,
         appConfig:appConfigSlice,
-        board:persistBoard
+        board:boardSlice,
+        data:persistData
 
     },
     middleware: (getDefaultMiddleware) =>

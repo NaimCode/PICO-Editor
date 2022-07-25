@@ -8,18 +8,21 @@ import { BoardAction } from "../state/slices/boardSlice";
 import NavBar from "./navBar";
 import { Helmet } from "react-helmet";
 import InitProject from "../Parts/InitProject";
+import { PAUSE } from "redux-persist/lib/constants";
+
 const App: FunctionComponent = () => {
   const stageRef = useRef();
-  window.onbeforeunload = (event) => {
-    const e = event || window.event;
-    // Cancel the event
-    e.preventDefault();
-    if (e) {
-      e.returnValue = ""; // Legacy method for cross browser support
-    }
-    return ""; // Legacy method for cross browser support
-  };
-  //get system theme mode
+  
+  // window.onbeforeunload = (event) => {
+    
+  //   const e = event || window.event;
+  //   // Cancel the event
+  //   e.preventDefault();
+  //   if (e) {
+  //     e.returnValue = ""; // Legacy method for cross browser support
+  //   }
+  //   return ""; // Legacy method for cross browser support
+  // };
   let favIcon = "/favicon.png";
   const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
   if (darkThemeMq.matches) {

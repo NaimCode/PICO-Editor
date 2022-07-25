@@ -330,7 +330,7 @@ const onEditText = ({
   });
 };
 
-function applyCrop(img: any, pos: any) {
+export function applyCrop(img: any, pos: any) {
   img.setAttr("lastCropUsed", pos);
   const crop = getCrop(
     img.image(),

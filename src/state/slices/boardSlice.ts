@@ -55,6 +55,7 @@ const initialState: TBoard = {
     ],
   ],
 };
+
 const boardSlice = createSlice({
   name: "board",
   initialState,

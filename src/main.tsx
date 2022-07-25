@@ -21,6 +21,7 @@ import DefaultElements from "./Parts/SideContent/Elements/default";
 import Emoji3D from './Parts/SideContent/Elements/3DIcons/index';
 import Gifs from "./Parts/SideContent/Elements/Gifs";
 import Images from "./Parts/SideContent/Images";
+import Templates from './Parts/SideContent/Templates/index';
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -30,12 +31,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App />}>
-              <Route index element={<Navigate to={"elements"} />} />
+              <Route index element={<Navigate to={"templates"} />} />
               <Route path="elements" element={<Elements />}>
                 <Route index element={<DefaultElements/>}/>
                 <Route path="3demojis" element={<Emoji3D/>}/>
                 <Route path="gifs" element={<Gifs/>}/>
               </Route>
+              <Route path="templates" element={<Templates />} />
               <Route path="images" element={<Images />} />
               <Route path="texts" element={<Texts />} />
               <Route path="uploads" element={<Uploads />} />

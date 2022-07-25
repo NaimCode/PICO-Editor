@@ -7,6 +7,8 @@ module.exports = {
       colors: {
         sideContent: "#1c1e1f",
         board: "#f4f4f5",
+        primary: "#1b00ff",
+        borderSecond: "#333636",
       },
     },
   },
