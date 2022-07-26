@@ -20,6 +20,7 @@ import {
 } from "react-konva";
 import { useElementSize } from "use-element-size";
 import { useAppDispatch, useAppSelector } from "../../hooks";
+import TemplateQuery from "../../Query/templates";
 import { SelectAppConfigScaling } from "../../state/slices/appConfigSlice";
 import {
   BoardAction,
@@ -61,7 +62,7 @@ const Board = ({ stageRef }: BoardProps) => {
   const w="w-["+divW+"]"
   const s="scale-"+scale
   const p=scale<100?'p-0':'pl-['+20*scale+']'
-  console.log(s);
+
   
   return (
     <div className={`bg-[#f4f4f5] flex-grow flex flex-col overflow-hidden relative`}>
@@ -130,7 +131,7 @@ const SaveTemplate = ({ nodes }: { nodes: Array<TNode> }) => {
     return (
       <button
         onClick={() => {
-          dispatch(DataAction.AddTemplate(nodes));
+         TemplateQuery.AddTemplate(nodes,dispatch)
         }}
         className="bg-yellow-300 z-30 absolute text-sm font-light  px-2 py-2 bottom-0 right-0 m-3 rounded-md drop-shadow-md"
       >

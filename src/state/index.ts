@@ -5,7 +5,7 @@ import boardSlice from "./slices/boardSlice";
 import userSlice from "./slices/userSlice";
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import storage from "redux-persist/es/storage";
-import dataSlice from "./slices/dataSlice";
+import dataSlice from './slices/dataSlice';
 const persistConfig = {
     key: 'PICO',
     storage,
@@ -18,7 +18,7 @@ const store=configureStore({
         user:userSlice,
         appConfig:appConfigSlice,
         board:boardSlice,
-        data:persistData
+        data:dataSlice
 
     },
     middleware: (getDefaultMiddleware) =>

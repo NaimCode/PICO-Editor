@@ -7,8 +7,11 @@ type TData = {
   templates: Array<TTemplate>;
 };
 export type TTemplate = {
+  id: string;
   type: TProjectSize;
   nodes: Array<TNode>;
+  createdBy?:string,
+  
 };
 const initialState: TData = {
   templates: [],
@@ -23,9 +26,12 @@ const dataSlice = createSlice({
         
     }
     },
-    AddTemplate: (state: TData, action: PayloadAction<Array<TNode>>) => {
+    Templates:(state:TData,action:PayloadAction<Array<TTemplate>>)=>{
+      state.templates=action.payload
+    },
+    AddTemplate: (state: TData, action: PayloadAction<{id:string,nodes:Array<TNode>}>) => {
       let type;
-      switch (action.payload[0].props.width) {
+      switch (action.payload.nodes[0].props.width) {
         case 800:
           type = "Landscape";
           break;
@@ -39,12 +45,12 @@ const dataSlice = createSlice({
           type = "Portrait";
           break;
       }
-    state.templates.push({nodes:action.payload,type:type as TProjectSize})
+    state.templates.push({nodes:action.payload.nodes,type:type as TProjectSize,id:action.payload.id})
     console.log('added');
     
     },
-    DeleteTemple:(state:TData,action:PayloadAction<number>)=>{
-        state.templates= [...state.templates.filter((t,i)=>i!=action.payload)]
+    DeleteTemplate:(state:TData,action:PayloadAction<string>)=>{
+        state.templates= [...state.templates.filter((t)=>t.id!=action.payload)]
     }
   },
 });

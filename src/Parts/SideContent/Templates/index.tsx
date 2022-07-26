@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
 import SideContent from "..";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
@@ -9,11 +9,15 @@ import { HiOutlineDocumentAdd as AddIcon } from "react-icons/hi";
 import { SelectUserRole } from "../../../state/slices/userSlice";
 import {AiOutlineDelete as DeleteIcon} from 'react-icons/ai'
 import { Badge, useToasts } from "@geist-ui/core";
+import TemplateQuery from "../../../Query/templates";
+
 const Templates = () => {
   const { templates } = useAppSelector(SelectData);
   const [filterType, setFilterType] = useState<TProjectSize>("Landscape");
-  console.log(templates);
-
+  const dispatch=useAppDispatch();
+  useEffect(() => {
+   TemplateQuery.getTemplates(templates,dispatch)
+  }, [])
   return (
     <SideContent>
       <div className="relative overflow-y-scroll flex flex-col gap-4 ">
@@ -22,7 +26,7 @@ const Templates = () => {
             const t=item as TProjectSize
             const lenght=templates.filter((tem,i)=>tem.type==t).length
             return (
-                <Badge.Anchor>
+                <Badge.Anchor    key={i}>
                 <Badge className="-translate-x-2 bg-yellow-400 text-black" scale={0.5}>
                     {lenght>=100?"99+":lenght}
                 </Badge>
@@ -36,7 +40,7 @@ const Templates = () => {
                 className={`${
                   filterType == item && "bg-[#525757]"
                 } transition-all duration-500 hover:bg-[#525757]/80 font-light text-white border-[1px] rounded-xl py-2 px-[15px] border-[#525757]`}
-                key={i}
+             
               >
                 {item}
               </button>
@@ -50,7 +54,7 @@ const Templates = () => {
             {templates
               .filter((t) => t.type == "Landscape")
               .map((t,i) => {
-                return <TemplateItem index={i} template={t} w={300} />;
+                return <TemplateItem key={i} index={i} template={t} w={300} />;
               })}
           </div>
         )}
@@ -60,7 +64,7 @@ const Templates = () => {
             {templates
               .filter((t) => t.type == "Square")
               .map((t,i) => {
-                return <TemplateItem index={i} template={t} w={140} />;
+                return <TemplateItem key={i} index={i} template={t} w={140} />;
               })}
           </div>
         )}
@@ -112,6 +116,7 @@ const TemplateItem = ({ template, w,index }: TTemplateItem) => {
   const { width, height, scale } = size(w, template.type);
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
+
 const role=useAppSelector(SelectUserRole)
   return (
     <div ref={ref} className="rounded-md overflow-hidden relative drop-shadow-md">
@@ -130,7 +135,7 @@ const role=useAppSelector(SelectUserRole)
         </button>
      {role!='user' &&    <button 
              onClick={() => {
-          dispatch(DataAction.DeleteTemple(index));
+          TemplateQuery.DeleteTemplate(template.id,dispatch);
         }}
         className="transition-all hover:scale-105 bg-red-600 rounded-md px-2 py-2  text-xl font-light">
             <DeleteIcon/>
@@ -139,7 +144,7 @@ const role=useAppSelector(SelectUserRole)
       <Stage scaleX={scale} scaleY={scale} width={width} height={height}>
         <Layer>
           {template.nodes.map((node, i) => {
-            return <ShapeItemReadOnly node={node} />;
+            return <ShapeItemReadOnly key={i} node={node} />;
           })}
         </Layer>
       </Stage>

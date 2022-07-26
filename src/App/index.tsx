@@ -14,25 +14,23 @@ import { useToasts } from "@geist-ui/core";
 const App: FunctionComponent = () => {
   const stageRef = useRef();
   
-  // window.onbeforeunload = (event) => {
+  window.onbeforeunload = (event) => {
     
-  //   const e = event || window.event;
-  //   // Cancel the event
-  //   e.preventDefault();
-  //   if (e) {
-  //     e.returnValue = ""; // Legacy method for cross browser support
-  //   }
-  //   return ""; // Legacy method for cross browser support
-  // };
+    const e = event || window.event;
+    // Cancel the event
+    e.preventDefault();
+    if (e) {
+      e.returnValue = ""; // Legacy method for cross browser support
+    }
+    return ""; // Legacy method for cross browser support
+  };
   let favIcon = "/favicon.png";
   const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
   if (darkThemeMq.matches) {
     favIcon = "/faviconDark.png";
     // Theme set to dark.
   }
-  const { setToast } = useToasts()
-  const notifier = () => setToast({ text: 'New project generated', delay: 2000 })
-  notifier()
+
   return (
     <main className="relative">
       <Helmet>
