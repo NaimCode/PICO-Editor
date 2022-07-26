@@ -13,7 +13,7 @@ import TemplateQuery from "../../../Query/templates";
 
 const Templates = () => {
   const { templates } = useAppSelector(SelectData);
-  const [filterType, setFilterType] = useState<TProjectSize>("Landscape");
+  const [filterType, setFilterType] = useState<TProjectSize>("Square");
   const dispatch=useAppDispatch();
   useEffect(() => {
    TemplateQuery.getTemplates(templates,dispatch)
