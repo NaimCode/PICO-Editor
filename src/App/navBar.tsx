@@ -13,9 +13,12 @@ import {
 import Button from "../Components/button";
 import IconButton from "../Components/iconButton";
 import Logo from "../Components/LogoBrand";
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { AppConfigAction, SelectAppConfigScaling } from "../state/slices/appConfigSlice";
-import { BoardAction } from "../state/slices/boardSlice";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import {
+  AppConfigAction,
+  SelectAppConfigScaling,
+} from "../state/slices/appConfigSlice";
+import { BoardAction, SelectBoardTitle } from "../state/slices/boardSlice";
 import { DataAction } from "../state/slices/dataSlice";
 
 function downloadURI(uri: any, name: string) {
@@ -32,12 +35,13 @@ type NavBarProps = {
 };
 const NavBar = ({ stageRef }: NavBarProps) => {
   const dispatch = useAppDispatch();
-const scale=useAppSelector(SelectAppConfigScaling)
+  const scale = useAppSelector(SelectAppConfigScaling);
+  const title = useAppSelector(SelectBoardTitle);
   const handleExport = () => {
+    const ext = ".png";
     if (stageRef.current) {
       const uri = stageRef.current.toDataURL({ pixelRatio: 1 });
-      console.log(uri);
-      downloadURI(uri, "stage.png");
+      downloadURI(uri, (title || "PICO_Editor_project") + ext);
     }
   };
   //   const handleNewProject = () => {
@@ -50,7 +54,7 @@ const scale=useAppSelector(SelectAppConfigScaling)
     <div className="min-h-[70px] max-h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
       <div className="flex flex-row items-center">
         <Logo />
-        <ProjectName />
+        <ProjectName title={title!} dispatch={dispatch} />
       </div>
       <div className="flex-grow flex flex-row gap-3 px-2 items-center">
         {/* <IconButton
@@ -59,7 +63,7 @@ const scale=useAppSelector(SelectAppConfigScaling)
           }}
           icon={<NewIcon />}
         /> */}
-                <div className="flex-grow"></div>
+        <div className="flex-grow"></div>
         <button
           onClick={() => dispatch(BoardAction.Init())}
           className="font-light  flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white"
@@ -88,8 +92,6 @@ const scale=useAppSelector(SelectAppConfigScaling)
         {/* <IconButton icon={ <UndoIcon/>}/>
         <IconButton icon={ <RedoIcon/>}/> */}
 
-      
-      
         <button
           onClick={handleExport}
           className="flex flex-row gap-2 items-center hover:bg-gray-300 bg-[#e7e7e8]  ml-5 py-2 px-4 rounded-md "
@@ -103,13 +105,17 @@ const scale=useAppSelector(SelectAppConfigScaling)
 };
 export default NavBar;
 
-const ProjectName: FunctionComponent = ({}) => {
+const ProjectName = ({ title, dispatch }: { title: string; dispatch: any }) => {
   return (
     <div
       style={{ fontFamily: "" }}
       className="flex flex-row gap-1 w-[350px] items-center px-5 group"
     >
       <input
+        value={title}
+        onChange={(e) => {
+          dispatch(BoardAction.ChangeName(e.target.value));
+        }}
         className="bg-transparent placeholder:text-white/30 text-white/80  flex-grow"
         placeholder="Your new project"
       />

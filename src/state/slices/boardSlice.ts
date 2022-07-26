@@ -23,20 +23,19 @@ export type TNode = {
   props: any;
   lock?: boolean;
 };
-type TStage = {
-  dimension: TDimension;
-  fill: string;
-};
+
 type TBoard = {
   nodeActif?: number;
   undo: number;
   nodes: Array<Array<TNode>>;
+  title?:string,
 };
 
 function emptyProject({width,height}:{width:number,height:number}):Array<Array<TNode>>{
   return  [
     [
       {
+        
         type: "rect",
         props: { fill: "white",width,height },
       },
@@ -45,6 +44,7 @@ function emptyProject({width,height}:{width:number,height:number}):Array<Array<T
 };
 
 const initialState: TBoard = {
+  title:"",
   undo: 0,
   nodes: [
     [
@@ -79,6 +79,7 @@ const boardSlice = createSlice({
        state.nodes=[action.payload]
        state.nodeActif = undefined;
        state.undo = 0;
+       state.title=""
     },
     NewProject: (state: TBoard, action: PayloadAction<TProjectSize>) => {
 
@@ -108,6 +109,7 @@ const boardSlice = createSlice({
       state.nodes=emptyProject({width,height})
       state.nodeActif = undefined;
       state.undo = 0;
+      state.title=""
 
     },
     AddNode: (state: TBoard, action: PayloadAction<TNode>) =>
@@ -190,6 +192,13 @@ const boardSlice = createSlice({
       if (index) state.nodes[state.undo][index].props[property] = value;
       else state.nodes[state.undo][state.nodeActif!].props[property] = value;
     },
+
+    ChangeName: (
+      state: TBoard,
+      action: PayloadAction<string>
+    ) => {
+       state.title=action.payload
+    },
   },
 });
 
@@ -213,4 +222,5 @@ export const SelectBoard = (state: RootState) => state.board;
 export const SelectBoardNodes = (state: RootState) =>
   state.board.nodes[state.board.undo];
 export const SelectBoardActifNode = (state: RootState) => state.board.nodeActif;
+export const SelectBoardTitle=(state:RootState)=>state.board.title
 export default boardSlice.reducer;
