@@ -18,6 +18,7 @@ const Templates = () => {
   useEffect(() => {
    TemplateQuery.getTemplates(templates,dispatch)
   }, [])
+  //nothing
   return (
     <SideContent>
       <div className="relative overflow-y-scroll flex flex-col gap-4 ">
