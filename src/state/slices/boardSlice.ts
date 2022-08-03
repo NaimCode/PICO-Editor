@@ -52,6 +52,15 @@ const initialState: TBoard = {
         type: "rect",
         props: { fill: "white" },
       },
+      {
+        type:"image",
+        props:{
+          src:"https://images.unsplash.com/photo-1659394754616-deb0f9c6ce22?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8Mnx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60",
+          width:100,
+          height:100,
+
+        }
+      }
     ],
   ],
 };
