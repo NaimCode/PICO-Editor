@@ -192,7 +192,7 @@ const ShapeItem = ({
 export default ShapeItem;
 
 const ImageShape = ({ props }: { props: any }) => {
-  const [imgSrc] = useImage(props.src);
+  const [imgSrc] = useImage(props.src,'anonymous');
 
   useEffect(() => {
     if (imgSrc) {
@@ -241,9 +241,11 @@ const onEditText = ({
   trRef.current.hide();
   shapeRef.current.hide();
   const textPosition = shapeRef.current.absolutePosition();
+  console.log(stageRef.current.container().offsetLeft,stageRef.current.container().offsetTop);
+  
   const areaPosition = {
-    x: stageRef.current.container().offsetLeft + textPosition.x,
-    y: stageRef.current.container().offsetTop + textPosition.y + 68,
+    x: stageRef.current.container().offsetLeft + textPosition.x+429,
+    y: stageRef.current.container().offsetTop + textPosition.y + 67,
   };
   const textnode = shapeRef.current;
   const textarea = document.createElement("textarea");
