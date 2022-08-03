@@ -20,6 +20,7 @@ import {
 } from "../state/slices/appConfigSlice";
 import { BoardAction, SelectBoardTitle } from "../state/slices/boardSlice";
 import { DataAction } from "../state/slices/dataSlice";
+import { useNavigate } from 'react-router-dom';
 
 function downloadURI(uri: any, name: string) {
   var link = document.createElement("a");
@@ -50,6 +51,7 @@ const NavBar = ({ stageRef }: NavBarProps) => {
   // handleNewProject()
   //dispatch(BoardAction.Init())
   //dispatch(DataAction.Fix())
+  const nav=useNavigate()
   return (
     <div className="min-h-[70px] max-h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
       <div className="flex flex-row items-center">
@@ -65,7 +67,10 @@ const NavBar = ({ stageRef }: NavBarProps) => {
         /> */}
         <div className="flex-grow"></div>
         <button
-          onClick={() => dispatch(BoardAction.Init())}
+          onClick={() => {
+            nav(0)
+          //  dispatch(BoardAction.Init())
+          }}
           className="font-light  flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white"
         >
           <NewIcon />

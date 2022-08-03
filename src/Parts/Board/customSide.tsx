@@ -255,24 +255,25 @@ const AddImageButton = ({ node }: { node: TNode }) => {
           add
         </button>
       </div>
+
+      <button className="relative border border-primary text-primary text-sm rounded-md py-2">
+        From local
+        <div className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer bg-red-300 flex justify-center items-center">
+          <input onChange={onFileChange} type={"file"} accept="image/*" />
+        </div>
+      </button>
     </div>
   );
   return (
-    // <Popover
-    //   placement="bottomStart"
-    //   content={content}
-    //   className="iconButton text-lg"
-    // >
-    <button className="relative text-xl overflow-hidden transition-all iconButton">
-      <AddImageIcon />
-      <input
-        onChange={onFileChange}
-        type={"file"}
-        accept="image/*"
-        className="absolute top-0 left-0 h-full opacity-0 cursor-pointer"
-      />
-    </button>
-    // </Popover>
+    <Popover
+      placement="bottomStart"
+      content={content}
+      className="iconButton text-lg"
+    >
+      <button className="relative text-xl overflow-hidden transition-all iconButton">
+        <AddImageIcon />
+      </button>
+    </Popover>
   );
 };
 

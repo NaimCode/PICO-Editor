@@ -130,17 +130,8 @@ const SaveTemplate = ({ nodes }: { nodes: Array<TNode> }) => {
     return (
       <button
         onClick={() => {
-          //  TemplateQuery.AddTemplate(nodes,dispatch)
-          dispatch(
-            BoardAction.AddNode({
-              type: "image",
-              props: {
-                src: "https://images.unsplash.com/photo-1659394754616-deb0f9c6ce22?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8Mnx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60",
-                width: 200,
-                height: 100,
-              },
-            })
-          );
+          TemplateQuery.AddTemplate(nodes,dispatch)
+          
         }}
         className="bg-yellow-300 z-30 absolute text-sm font-light  px-2 py-2 bottom-0 right-0 m-3 rounded-md drop-shadow-md"
       >
