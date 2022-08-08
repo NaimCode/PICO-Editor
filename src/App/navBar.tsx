@@ -1,5 +1,5 @@
-import { Input } from "@geist-ui/core";
-import { FunctionComponent, RefObject } from "react";
+import { Input, Popover, Radio, Tabs } from "@geist-ui/core";
+import { FunctionComponent, ReactNode, RefObject } from "react";
 import {
   BsShare as ShareIcon,
   BsSave2 as SaveIcon,
@@ -20,7 +20,7 @@ import {
 } from "../state/slices/appConfigSlice";
 import { BoardAction, SelectBoardTitle } from "../state/slices/boardSlice";
 import { DataAction } from "../state/slices/dataSlice";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function downloadURI(uri: any, name: string) {
   var link = document.createElement("a");
@@ -51,7 +51,7 @@ const NavBar = ({ stageRef }: NavBarProps) => {
   // handleNewProject()
   //dispatch(BoardAction.Init())
   //dispatch(DataAction.Fix())
-  const nav=useNavigate()
+  const nav = useNavigate();
   return (
     <div className="min-h-[70px] max-h-[70px] bg-[#0e0e15] w-full flex flex-row justify-between">
       <div className="flex flex-row items-center">
@@ -68,8 +68,8 @@ const NavBar = ({ stageRef }: NavBarProps) => {
         <div className="flex-grow"></div>
         <button
           onClick={() => {
-            nav(0)
-          //  dispatch(BoardAction.Init())
+            nav(0);
+            //  dispatch(BoardAction.Init())
           }}
           className="font-light  flex flex-row gap-2 items-center transition-all text-white/60 hover:text-white"
         >
@@ -96,14 +96,15 @@ const NavBar = ({ stageRef }: NavBarProps) => {
           <span className=" text-[13px]">New project</span></button> */}
         {/* <IconButton icon={ <UndoIcon/>}/>
         <IconButton icon={ <RedoIcon/>}/> */}
-
-        <button
-          onClick={handleExport}
-          className="flex flex-row gap-2 items-center hover:bg-gray-300 bg-[#e7e7e8]  ml-5 py-2 px-4 rounded-md "
-        >
-          <ExportIcon className="text-xl text-black " />
-          <span className="text-black/80 text-[14px]">Export</span>
-        </button>
+        <ExportButton>
+          <button
+            //   onClick={handleExport}
+            className="flex flex-row gap-2 items-center hover:bg-gray-300 bg-[#e7e7e8]  ml-5 py-2 px-4 rounded-md "
+          >
+            <ExportIcon className="text-xl text-black " />
+            <span className="text-black/80 text-[14px]">Export</span>
+          </button>
+        </ExportButton>
       </div>
     </div>
   );
@@ -127,5 +128,27 @@ const ProjectName = ({ title, dispatch }: { title: string; dispatch: any }) => {
       <EditIcon className="text-white/80 hidden group-hover:block" />
       <CheckIcon className="text-white/80 block group-hover:hidden" />
     </div>
+  );
+};
+
+const ExportButton = ({ children }: { children: ReactNode }) => {
+  const content = () => (
+    <div className="w-[300px]  px-2   text-sm">
+      <Popover.Item>
+         <button className="flex flex-row gap-2">
+      {/* img for file jpg.jpg */}
+      <img
+
+        src="https://img.icons8.com/color/48/000000/jpg.png"
+        className="w-7 h-7 mr-2"
+      />
+         </button>
+      </Popover.Item>
+    </div>
+  );
+  return (
+    <Popover disableItemsAutoClose placement="bottomEnd" content={content}>
+      {children}
+    </Popover>
   );
 };
