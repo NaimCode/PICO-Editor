@@ -1,5 +1,5 @@
-import { Input, Popover, Radio, Tabs } from "@geist-ui/core";
-import { FunctionComponent, ReactNode, RefObject } from "react";
+import { Divider, Input, Popover, Radio, Tabs } from "@geist-ui/core";
+import { FunctionComponent, ReactNode, RefObject, useEffect, useState } from "react";
 import {
   BsShare as ShareIcon,
   BsSave2 as SaveIcon,
@@ -18,7 +18,7 @@ import {
   AppConfigAction,
   SelectAppConfigScaling,
 } from "../state/slices/appConfigSlice";
-import { BoardAction, SelectBoardTitle } from "../state/slices/boardSlice";
+import { BoardAction, SelectBoardNodes, SelectBoardTitle } from "../state/slices/boardSlice";
 import { DataAction } from "../state/slices/dataSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -38,10 +38,14 @@ const NavBar = ({ stageRef }: NavBarProps) => {
   const dispatch = useAppDispatch();
   const scale = useAppSelector(SelectAppConfigScaling);
   const title = useAppSelector(SelectBoardTitle);
-  const handleExport = () => {
-    const ext = ".png";
+
+  const handleExport = ({ext,quality,title}:{ext:string,quality:number,title:string}) => {
+
     if (stageRef.current) {
-      const uri = stageRef.current.toDataURL({ pixelRatio: 1 });
+
+      const uri = stageRef.current.toDataURL({ pixelRatio: quality });
+
+      
       downloadURI(uri, (title || "PICO_Editor_project") + ext);
     }
   };
@@ -96,7 +100,7 @@ const NavBar = ({ stageRef }: NavBarProps) => {
           <span className=" text-[13px]">New project</span></button> */}
         {/* <IconButton icon={ <UndoIcon/>}/>
         <IconButton icon={ <RedoIcon/>}/> */}
-        <ExportButton>
+        <ExportButton handleExport={handleExport} stageRef={stageRef}>
           <button
             //   onClick={handleExport}
             className="flex flex-row gap-2 items-center hover:bg-gray-300 bg-[#e7e7e8]  ml-5 py-2 px-4 rounded-md "
@@ -131,18 +135,54 @@ const ProjectName = ({ title, dispatch }: { title: string; dispatch: any }) => {
   );
 };
 
-const ExportButton = ({ children }: { children: ReactNode }) => {
-  const content = () => (
-    <div className="w-[300px]  px-2   text-sm">
-      <Popover.Item>
-         <button className="flex flex-row gap-2">
-      {/* img for file jpg.jpg */}
-      <img
+const ExportButton = ({ children,handleExport,stageRef }: { children: ReactNode,handleExport:Function,stageRef:any }) => {
+const [dimensions,setDimensions] = useState({width:0,height:0});
+const nodes=useAppSelector(SelectBoardNodes);
+const {width,height}=nodes[0].props
 
-        src="https://img.icons8.com/color/48/000000/jpg.png"
-        className="w-7 h-7 mr-2"
-      />
-         </button>
+  const content = () => (
+    <div className="w-[300px]  text-sm">
+     
+      <Popover.Item className="flex flex-col">
+        <button onClick={()=>handleExport({ext:".jpg",quality:1})} className="flex flex-row gap-2 w-full items-center hover:bg-gray-100 rounded-md p-2">
+          {/* img for file jpg.jpg */}
+          <img
+            src="https://img.icons8.com/48/000000/jpg.png"
+            className="w-7 h-7 mr-2"
+          />
+          <span className="text-sm font-light">Quality low </span>
+          <span className="font-bold flex-grow text-right">{width}x{height}</span>
+        </button>
+        <button onClick={()=>handleExport({ext:".jpg",quality:2})} className="flex flex-row gap-2 w-full items-center hover:bg-gray-100 rounded-md p-2">
+          {/* img for file jpg.jpg */}
+          <img
+            src="https://img.icons8.com/color/48/000000/jpg.png"
+            className="w-7 h-7 mr-2"
+          />
+          <span className="text-sm font-light">Quality HD</span>
+          <span className="font-bold flex-grow text-right">{width*2}x{height*2}</span>
+        </button>
+        <Divider className="bg-gray-300 h-[1px] w-full"/>
+        <button onClick={()=>handleExport({ext:".png",quality:1})} className="flex flex-row gap-2 w-full items-center hover:bg-gray-100 rounded-md p-2">
+          {/* img for file jpg.jpg */}
+          <img
+            src="https://img.icons8.com/48/000000/png.png"
+            className="w-7 h-7 mr-2"
+          />
+         <span className="text-sm font-light">Quality low</span>
+         <span className="font-bold flex-grow text-right">{width}x{height}</span>
+        </button>
+        <button onClick={()=>handleExport({ext:".png",quality:2})} className="flex flex-row gap-2 w-full items-center hover:bg-gray-100 rounded-md p-2">
+          {/* img for file png.png*/}
+          {/* img for png */}
+  
+          <img
+            src="https://img.icons8.com/color/41/000000/png.png"
+            className="w-7 h-7 mr-2"
+          />
+           <span className="text-sm font-light">Quality HD</span>
+           <span className="font-bold flex-grow text-right">{width*2}x{height*2}</span>
+        </button>
       </Popover.Item>
     </div>
   );

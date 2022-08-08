@@ -17,6 +17,7 @@
     "@types/react-redux": "^7.1.24",
     "firebase": "^9.9.1",
     "konva": "^8.3.10",
+    "node-fetch": "^3.2.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
@@ -25,6 +26,7 @@
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "redux-persist": "^6.0.0",
+    "unsplash-js": "^7.0.15",
     "use-element-size": "^1.2.2",
     "use-image": "^1.0.12"
   },
