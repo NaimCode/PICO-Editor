@@ -27,7 +27,7 @@ const randomImages = async ({limit,query}:{limit:number,query:string}) => {
   );
   const data = await response.json();
   console.log(data);
-  return data
+  return data.errors?[]:data;
 }
 const Images = () => {
   const [images, setImages] = useState<any[]>([]);
