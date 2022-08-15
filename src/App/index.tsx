@@ -13,6 +13,7 @@ import { useToasts } from "@geist-ui/core";
 
 const App: FunctionComponent = () => {
   const stageRef = useRef();
+  console.log(import.meta.env.MODE);
   
   window.onbeforeunload = (event) => {
     

@@ -13,7 +13,7 @@ type User={
 const initialState:User={
     name:"Naim Abdelkerim",
     avatar:undefined,
-    role:'super admin',
+    role:import.meta.env.MODE=='development'? 'super admin':'user',
     store:[],
   
 }
