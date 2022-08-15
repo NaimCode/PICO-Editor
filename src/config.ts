@@ -1,5 +1,5 @@
 import { GiphyFetch } from "@giphy/js-fetch-api";
-export const KEY_GIPHY = "C8MOnqzxJ9mcZ0jUBAmY9TNSRNv5dv8e";
+export const KEY_GIPHY = import.meta.env.VITE_APP_GIPHY_KEY;
 export const gf = new GiphyFetch(KEY_GIPHY);
 
 // Import the functions you need from the SDKs you need

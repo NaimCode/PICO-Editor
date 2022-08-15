@@ -11,15 +11,15 @@ import { GrClose as CloseIcon } from "react-icons/gr";
 //setting up unsplash api
 
 //setting up unsplash call api
-const searchImages = async ({query,limit}:{query: string,limit:number}) => {
-  const response = await fetch(
-    `https://api.unsplash.com/search/photos?per_page=${limit}&query=${query}&client_id=${import.meta.env.VITE_APP_UNSPLASH_ACCESS}`
-  );
-  const data = await response.json();
-  console.log(data);
+// const searchImages = async ({query,limit}:{query: string,limit:number}) => {
+//   const response = await fetch(
+//     `https://api.unsplash.com/search/photos?per_page=${limit}&query=${query}&client_id=${import.meta.env.VITE_APP_UNSPLASH_ACCESS}`
+//   );
+//   const data = await response.json();
+//   console.log(data);
   
-  return data.results;
-}
+//   return data.results;
+// }
 //setting up unsplash call api random
 const randomImages = async ({limit,query}:{limit:number,query:string}) => {
   const response = await fetch(
