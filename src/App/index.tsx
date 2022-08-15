@@ -13,7 +13,7 @@ import { useToasts } from "@geist-ui/core";
 
 const App: FunctionComponent = () => {
   const stageRef = useRef();
-  console.log(import.meta.env.MODE);
+  console.log(import.meta.env.VITE_APP_GIPHY_KEY,import.meta.env.VITE_APP_UNSPLASH_ACCESS);
   
   window.onbeforeunload = (event) => {
     
