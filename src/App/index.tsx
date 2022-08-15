@@ -1,4 +1,4 @@
-import { FunctionComponent, useRef } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Outlet } from "react-router-dom";
 import { useAppDispatch } from "../hooks";
 import Board from "../Parts/Board";
@@ -47,6 +47,7 @@ const App: FunctionComponent = () => {
           <Board stageRef={stageRef} />
         </div>
       </section>
+      <ResponsiveView/>
       <InitProject/>
     </main>
   );
@@ -54,3 +55,25 @@ const App: FunctionComponent = () => {
 
 export default App;
 
+const ResponsiveView=()=>{
+  //get the current width of the window
+  const [windowSize, setWindowSize] = useState<number>(window.innerWidth||0);
+
+useEffect(() => {
+  console.log(windowSize);
+  
+    const handleResize = () => {
+        setWindowSize(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+}, [])
+
+  return (<div className={`${windowSize>=900&&"hidden"} absolute z-50 filter backdrop-blur-[10px] top-0 left-0 h-screen w-screen flex justify-center items-center`}>
+  <span className="italic drop-shadow-lg px-4 text-center font-bold">Please use a bigger screen, the app doesn't support small screen yet</span>
+</div>)
+
+
+}

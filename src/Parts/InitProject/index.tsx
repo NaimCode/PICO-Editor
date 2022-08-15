@@ -10,7 +10,7 @@ const InitProject = () => {
     const {props} =nodes[0]
 
   return (
-    <div className={`${props.width&&props.height&&"hidden"} absolute z-50 filter backdrop-blur-[10px] top-0 left-0 h-screen w-screen flex justify-center items-center`}>
+    <div className={`${props.width&&props.height&&"hidden"} absolute z-40 filter backdrop-blur-[10px] top-0 left-0 h-screen w-screen flex justify-center items-center`}>
       <div className="w-[70%] bg-white drop-shadow-2xl rounded-2xl p-10 flex flex-col gap-10">
         <h2 className="text-3xl font-bold">New project</h2>
         <div className="bg-board p-5 border-[#eaadad]/40 border-dashed border-[2px] rounded-2xl flex flex-row justify-evenly items-end">
